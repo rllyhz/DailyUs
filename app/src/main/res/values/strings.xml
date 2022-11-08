@@ -1,15 +1,57 @@
 <resources>
     <string name="app_name">DailyUs</string>
 
+    <!-- Data -->
+    <string name="on_boarding_heading">@string/app_name</string>
+    <string name="on_boarding_sub_heading">Ekspresikan Kenanganmu Dengan Membagikannya Pada Teman</string>
+    <string name="home_greeting_user">Halo, %s!</string>
+    <string name="home_greeting_headline">Bagikan Kenanganmu Hari Ini.</string>
+    <string name="upload_photo_preview">Hasil Foto</string>
+    <string name="profile_email_example">rullyihza00@gmail.com</string>
+    <string name="profile_full_name_example">Rully Ihza Mahendra</string>
+    <string name="card_story_user_full_name_example">Rully Ihza Mahendra</string>
+    <string name="card_story_date_example">07:12, 09 Nov 2022</string>
+    <string name="card_story_description_example">Hari yang sangat indah untuk membagikan suasana hati.</string>
+    <!-- END OF Data -->
+
     <!-- UI -->
+    <!-- Titles -->
+    <string name="title_register">Daftar</string>
+    <string name="title_login">Masuk</string>
+    <string name="title_detail">Detail</string>
+
+    <!-- Buttons -->
+    <string name="button_register">Daftar</string>
+    <string name="button_login">Masuk</string>
+    <string name="button_logout">Keluar</string>
+    <string name="button_upload">Unggah</string>
+    <string name="button_take_picture">Kamera</string>
+    <string name="button_pick_from_gallery">Galeri</string>
+    <string name="button_on_boarding_next">Lanjutkan</string>
+
     <!-- Content Description -->
-    <string name="button_content_description_example">Button</string>
-    <string name="icon_content_description_example">Icon</string>
+    <string name="button_content_description_example">Tombol</string>
+    <string name="icon_content_description_example">Ikon</string>
+    <string name="button_register_content_description_example">@string/button_register</string>
+    <string name="button_login_content_description_example">@string/button_login</string>
+    <string name="button_logout_content_description_example">@string/button_logout</string>
+    <string name="button_upload_content_description_example">@string/button_upload</string>
+    <string name="button_take_picture_content_description_example">@string/button_take_picture</string>
+    <string name="button_pick_from_gallery_content_description_example">@string/button_pick_from_gallery</string>
+    <string name="button_on_boarding_next_content_description_example">@string/button_on_boarding_next</string>
+    <string name="button_capture_camera">Button tangkap foto</string>
+    <string name="button_switch_capture_mode">Button ganti mode kamera</string>
+    <string name="icon_navigate_up_content_description_example">Ikon kembali ke halaman sebelumnya</string>
+    <string name="icon_home_content_description_example">Ikon halaman utama</string>
+    <string name="icon_upload_story_content_description_example">Ikon unggah story</string>
+    <string name="icon_profile_content_description_example">Ikon profil</string>
+
     <!-- Edit Text Hint -->
-    <string name="name_hint">Name</string>
+    <string name="name_hint">Nama</string>
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Password</string>
     <string name="description_hint">Berikan deskripsi…</string>
+
     <!-- Edit Text Invalid message -->
     <string name="name_invalid_message">Nama tidak valid</string>
     <string name="email_invalid_message">Email tidak valid</string>
