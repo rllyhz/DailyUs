@@ -4,14 +4,9 @@ import id.rllyhz.dailyus.data.source.remote.model.DailyStoryResponse
 import id.rllyhz.dailyus.data.source.remote.model.UploadStoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Query
+import retrofit2.http.*
 
-interface DailyUsApiPaging {
+interface DailyUsStoriesApiService {
     /*
      * Retrieve all stories
      *
