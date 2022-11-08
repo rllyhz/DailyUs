@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':view')
+
     implementation "androidx.core:core-ktx:$androidXCoreKtxVersion"
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
     implementation "com.google.android.material:material:$materialDesignVersion"
