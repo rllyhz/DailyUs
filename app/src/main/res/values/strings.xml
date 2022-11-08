@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">DailyUs</string>
+
+    <!-- UI -->
+    <!-- Content Description -->
+    <string name="button_content_description_example">Button</string>
+    <string name="icon_content_description_example">Icon</string>
+    <!-- Edit Text Hint -->
+    <string name="name_hint">Name</string>
+    <string name="email_hint">E-mail</string>
+    <string name="password_hint">Password</string>
+    <string name="description_hint">Berikan deskripsi…</string>
+    <!-- Edit Text Invalid message -->
+    <string name="name_invalid_message">Nama tidak valid</string>
+    <string name="email_invalid_message">Email tidak valid</string>
+    <string name="password_invalid_message">Password tidak valid</string>
+    <!-- END OF UI -->
 </resources>
