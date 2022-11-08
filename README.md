@@ -18,3 +18,5 @@ story with photo and description, show story list, and creating a custom view.
 - Paging 3
 - Shimmer Effect (for loading state)
 - Glide (for loading and caching image)
+- CameraX
+- Localization (supports English and Indonesian)
