@@ -2,7 +2,7 @@ package id.rllyhz.dailyus.data.source
 
 import id.rllyhz.dailyus.data.source.remote.model.AuthLoginResponse
 import id.rllyhz.dailyus.data.source.remote.model.AuthRegisterResponse
-import id.rllyhz.dailyus.utils.Resource
+import id.rllyhz.dailyus.vo.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {

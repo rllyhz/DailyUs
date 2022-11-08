@@ -10,7 +10,7 @@ import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.data.source.remote.model.DailyStoryResponse
 import id.rllyhz.dailyus.data.source.remote.model.UploadStoryResponse
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
-import id.rllyhz.dailyus.utils.Resource
+import id.rllyhz.dailyus.vo.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow

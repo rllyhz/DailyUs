@@ -1,4 +1,4 @@
-package id.rllyhz.dailyus.utils
+package id.rllyhz.dailyus.vo
 
 sealed class Resource<out T>(
     val data: T? = null,
