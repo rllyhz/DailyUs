@@ -95,7 +95,7 @@ class AuthPreferences @Inject constructor(
      */
     val isLoggedIn = _dataStore.data.map { preferences ->
         preferences[IS_LOGGED_IN_KEY] ?: false
-    }
+    }.distinctUntilChanged().asLiveData()
 
     /*
      * Save login state
