@@ -16,6 +16,7 @@ import id.rllyhz.dailyus.data.source.DailyStoriesRepositoryImpl
 import id.rllyhz.dailyus.data.source.local.db.DailyUsDatabase
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsAuthApiService
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
+import id.rllyhz.dailyus.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -40,7 +41,7 @@ object AppModule {
         Room.databaseBuilder(
             context,
             DailyUsDatabase::class.java,
-            "dailyUs.db"
+            Constants.databaseName
         ).build()
 
     @Provides
@@ -61,7 +62,7 @@ object AppModule {
         apiClient: OkHttpClient
     ): DailyUsAuthApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://story-api.dicoding.dev/v1/")
+            .baseUrl(Constants.apiBaseUrl)
             .addConverterFactory(MoshiConverterFactory.create())
             .client(apiClient)
             .build()
@@ -75,7 +76,7 @@ object AppModule {
         apiClient: OkHttpClient
     ): DailyUsStoriesApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://story-api.dicoding.dev/v1/")
+            .baseUrl(Constants.apiBaseUrl)
             .addConverterFactory(MoshiConverterFactory.create())
             .client(apiClient)
             .build()
