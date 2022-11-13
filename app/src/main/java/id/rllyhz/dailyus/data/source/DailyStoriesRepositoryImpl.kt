@@ -54,7 +54,7 @@ class DailyStoriesRepositoryImpl @Inject constructor(
 
     override fun uploadNewStory(
         token: String,
-        photo: MultipartBody.Part,
+        photoUrl: MultipartBody.Part,
         description: RequestBody,
         latitude: RequestBody?,
         longitude: RequestBody?
@@ -65,7 +65,7 @@ class DailyStoriesRepositoryImpl @Inject constructor(
             try {
                 val responseData = storiesApi.uploadNewStory(
                     "Bearer $token",
-                    photo,
+                    photoUrl,
                     description,
                     latitude,
                     longitude
