@@ -30,6 +30,7 @@
     <string name="button_on_boarding_next">Lanjutkan</string>
 
     <!-- Content Description -->
+    <string name="on_boarding_illustration_content_description">Ilustrasi berbagi kenangan bersama teman</string>
     <string name="button_content_description_example">Tombol</string>
     <string name="icon_content_description_example">Ikon</string>
     <string name="button_register_content_description_example">@string/button_register</string>
