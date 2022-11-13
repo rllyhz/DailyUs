@@ -24,14 +24,12 @@ class OnBoardingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.let {
-            with(it) {
-                onBoardingBtnLogin.setOnClickListener {
-                    findNavController().navigate(R.id.action_onBoardingFragment_to_loginFragment)
-                }
-                onBoardingBtnRegister.setOnClickListener {
-                    findNavController().navigate(R.id.action_onBoardingFragment_to_registerFragment)
-                }
+        binding?.run {
+            onBoardingBtnLogin.setOnClickListener {
+                findNavController().navigate(R.id.action_onBoardingFragment_to_loginFragment)
+            }
+            onBoardingBtnRegister.setOnClickListener {
+                findNavController().navigate(R.id.action_onBoardingFragment_to_registerFragment)
             }
         }
     }
