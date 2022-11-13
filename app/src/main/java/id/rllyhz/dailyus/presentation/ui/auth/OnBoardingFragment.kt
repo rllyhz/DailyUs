@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.FragmentOnBoardingBinding
 
 class OnBoardingFragment : Fragment() {
@@ -17,6 +19,21 @@ class OnBoardingFragment : Fragment() {
     ): View? {
         binding = FragmentOnBoardingBinding.inflate(inflater)
         return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding?.let {
+            with(it) {
+                onBoardingBtnLogin.setOnClickListener {
+                    findNavController().navigate(R.id.action_onBoardingFragment_to_loginFragment)
+                }
+                onBoardingBtnRegister.setOnClickListener {
+                    findNavController().navigate(R.id.action_onBoardingFragment_to_registerFragment)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
