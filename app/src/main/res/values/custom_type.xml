@@ -4,4 +4,25 @@
     <style name="SplashProgressBarStyle" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="colorAccent">@color/my_purple_200</item>
     </style>
+
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="colorPrimary">@color/my_orange</item>
+        <item name="android:padding">16dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="OutlinedButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="colorPrimary">@color/my_orange</item>
+        <item name="android:padding">16dp</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">@color/my_orange</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>
