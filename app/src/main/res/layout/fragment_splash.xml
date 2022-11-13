@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layoutDescription="@xml/fragment_splash_scene"
     tools:context=".presentation.ui.auth.SplashFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/splash_iv_logo"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:layout_marginBottom="50dp"
+        android:contentDescription="@string/icon_logo"
+        android:src="@drawable/ic_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/my_purple_700" />
+
+    <TextView
+        android:id="@+id/splash_tv_app_name"
+        style="@style/SplashTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/splash_iv_logo" />
+
+    <ProgressBar
+        android:id="@+id/splash_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:theme="@style/SplashProgressBarStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splash_tv_app_name" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
