@@ -16,6 +16,7 @@
 
     <!-- UI -->
     <!-- Titles -->
+    <string name="title_example">Judul</string>
     <string name="title_register">Daftar</string>
     <string name="title_login">Masuk</string>
     <string name="title_detail">Detail</string>
@@ -42,7 +43,8 @@
     <string name="button_on_boarding_next_content_description_example">@string/button_on_boarding_next</string>
     <string name="button_capture_camera">Button tangkap foto</string>
     <string name="button_switch_capture_mode">Button ganti mode kamera</string>
-    <string name="icon_logo">Ikon logo</string>
+    <string name="icon_back_content_description_example">Ikon kembali</string>
+    <string name="icon_logo_content_description_example">Ikon logo</string>
     <string name="icon_navigate_up_content_description_example">Ikon kembali ke halaman sebelumnya</string>
     <string name="icon_home_content_description_example">Ikon halaman utama</string>
     <string name="icon_upload_story_content_description_example">Ikon unggah story</string>
