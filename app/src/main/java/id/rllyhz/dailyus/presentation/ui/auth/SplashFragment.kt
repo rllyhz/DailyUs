@@ -38,7 +38,7 @@ class SplashFragment : Fragment() {
             viewModel.isLoggedIn()
                 .observe(viewLifecycleOwner) { alreadyLoggedIn ->
                     if (alreadyLoggedIn) {
-                        // go to main activity
+                        findNavController().navigate(R.id.action_splashFragment_to_mainActivity)
                     } else {
                         findNavController().navigate(R.id.action_splashFragment_to_onBoardingFragment)
                     }
