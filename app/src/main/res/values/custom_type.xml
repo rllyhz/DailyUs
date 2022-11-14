@@ -29,14 +29,4 @@
         <item name="textAllCaps">false</item>
         <item name="android:textSize">18sp</item>
     </style>
-
-    <style name="CustomBottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="android:fontFamily">@font/poppins_regular</item>
-        <item name="android:background">@drawable/bg_bottom_nav_main</item>
-        <item name="backgroundTint">@android:color/transparent</item>
-        <item name="itemBackground">@android:color/transparent</item>
-        <item name="itemIconTint">@color/white</item>
-        <item name="itemTextColor">@color/white</item>
-        <item name="showText">false</item>
-    </style>
 </resources>
