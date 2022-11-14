@@ -72,6 +72,7 @@
         android:alpha="0"
         android:theme="@style/ButtonProgressBarStyle"
         android:translationZ="12dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/register_btn_submit"
         app:layout_constraintEnd_toEndOf="@id/register_btn_submit"
         app:layout_constraintStart_toStartOf="@id/register_btn_submit"
