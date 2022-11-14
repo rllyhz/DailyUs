@@ -98,7 +98,7 @@ class RegisterFragment : Fragment() {
                 when (resultResources) {
                     is Resource.Error -> {
                         updateUI(UIState.Error, resultResources.message)
-                        println("RegisterFragment" + resultResources.message)
+                        println("RegisterFragment: " + resultResources.message)
                     }
                     is Resource.Loading -> {
                         updateUI(UIState.Loading, null)

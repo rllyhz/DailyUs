@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 data class AuthLoginResponse(
     @Json(name = "loginResult")
-    val authLoginResult: AuthLoginResult,
+    val loginResult: AuthLoginResult,
 
     @Json(name = "error")
     val isError: Boolean,

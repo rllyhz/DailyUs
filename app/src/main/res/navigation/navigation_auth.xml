@@ -27,26 +27,11 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="id.rllyhz.dailyus.presentation.ui.auth.LoginFragment"
-        android:label="LoginFragment">
-        <action
-            android:id="@+id/action_loginFragment_to_onBoardingFragment"
-            app:destination="@id/onBoardingFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        android:label="LoginFragment" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="id.rllyhz.dailyus.presentation.ui.auth.RegisterFragment"
         android:label="RegisterFragment">
-        <action
-            android:id="@+id/action_registerFragment_to_onBoardingFragment"
-            app:destination="@id/onBoardingFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -72,9 +57,11 @@
         <action
             android:id="@+id/action_splashFragment_to_mainActivity"
             app:destination="@id/mainActivity"
-            app:enterAnim="@anim/slide_to_top"
-            app:exitAnim="@anim/slide_to_down"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
             app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>

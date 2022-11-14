@@ -93,7 +93,7 @@ class LoginFragment : Fragment() {
             when (resultResources) {
                 is Resource.Error -> {
                     updateUI(UIState.Error, resultResources.message)
-                    println("LoginFragment" + resultResources.message)
+                    println("LoginFragment: " + resultResources.message)
                 }
                 is Resource.Loading -> {
                     updateUI(UIState.Loading, null)
@@ -101,7 +101,7 @@ class LoginFragment : Fragment() {
                 is Resource.Success -> {
                     updateUI(UIState.HasData, null)
 
-                    saveLoggedInUserData(resultResources.data!!.authLoginResult, userEmail)
+                    saveLoggedInUserData(resultResources.data!!.loginResult, userEmail)
 
                     Intent(requireContext(), MainActivity::class.java).also {
                         startActivity(it)
