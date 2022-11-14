@@ -37,6 +37,6 @@
         <item name="itemBackground">@android:color/transparent</item>
         <item name="itemIconTint">@color/white</item>
         <item name="itemTextColor">@color/white</item>
-        <item name="showText">true</item>
+        <item name="showText">false</item>
     </style>
 </resources>
