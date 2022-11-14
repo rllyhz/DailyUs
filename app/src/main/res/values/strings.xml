@@ -30,6 +30,11 @@
     <string name="button_pick_from_gallery">Galeri</string>
     <string name="button_on_boarding_next">Lanjutkan</string>
 
+    <!-- Dialog -->
+    <string name="dialog_title_register_success">Berhasil mendaftar</string>
+    <string name="dialog_message_register_success">Anda telah terdaftar! Silahkan login</string>
+    <string name="dialog_positive_action_register_success">Baik</string>
+
     <!-- Content Description -->
     <string name="on_boarding_illustration_content_description">Ilustrasi berbagi kenangan bersama teman</string>
     <string name="button_content_description_example">Tombol</string>
@@ -57,8 +62,14 @@
     <string name="description_hint">Berikan deskripsi…</string>
 
     <!-- Edit Text Invalid message -->
+    <string name="name_empty_message">Nama tidak boleh kosong</string>
+    <string name="email_empty_message">Email tidak boleh kosong</string>
+    <string name="password_empty_message">Password tidak boleh kosong</string>
     <string name="name_invalid_message">Nama tidak valid</string>
     <string name="email_invalid_message">Email tidak valid</string>
     <string name="password_invalid_message">Password tidak valid</string>
+    <string name="wrong_credential_message">Email atau password salah</string>
+    <string name="email_already_taken_message">Email sudah terdaftar</string>
+    <string name="internal_error_message">Maaf, telah terjadi kesalahan</string>
     <!-- END OF UI -->
 </resources>
