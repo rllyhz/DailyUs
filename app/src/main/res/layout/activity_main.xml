@@ -29,6 +29,7 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
         app:itemBackground="@android:color/transparent"
+        app:itemIconSize="32dp"
         app:itemIconTint="@color/white"
         app:itemRippleColor="@color/white"
         app:itemTextColor="@color/white"
