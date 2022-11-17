@@ -1,19 +1,16 @@
 package id.rllyhz.dailyus.di
 
 import android.content.Context
-import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import id.rllyhz.dailyus.BuildConfig
 import id.rllyhz.dailyus.data.preferences.AuthPreferences
 import id.rllyhz.dailyus.data.source.AuthRepository
 import id.rllyhz.dailyus.data.source.AuthRepositoryImpl
 import id.rllyhz.dailyus.data.source.DailyStoriesRepository
 import id.rllyhz.dailyus.data.source.DailyStoriesRepositoryImpl
-import id.rllyhz.dailyus.data.source.local.db.DailyUsDatabase
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsAuthApiService
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
 import id.rllyhz.dailyus.utils.Constants
@@ -35,22 +32,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(
-        @ApplicationContext context: Context
-    ): DailyUsDatabase =
-        Room.databaseBuilder(
-            context,
-            DailyUsDatabase::class.java,
-            Constants.databaseName
-        ).build()
-
-    @Provides
-    @Singleton
     fun provideApiClient(): OkHttpClient =
         OkHttpClient.Builder().apply {
             val loggingInterceptor = HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY)
-                .apply { if (!BuildConfig.DEBUG) setLevel(HttpLoggingInterceptor.Level.NONE) }
 
             addInterceptor(loggingInterceptor)
 
@@ -94,6 +79,5 @@ object AppModule {
     @Singleton
     fun provideDailyStoriesRepository(
         storiesApi: DailyUsStoriesApiService,
-        db: DailyUsDatabase
-    ): DailyStoriesRepository = DailyStoriesRepositoryImpl(storiesApi, db)
+    ): DailyStoriesRepository = DailyStoriesRepositoryImpl(storiesApi)
 }

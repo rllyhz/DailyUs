@@ -7,6 +7,8 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.ActivityMainBinding
+import id.rllyhz.dailyus.utils.hide
+import id.rllyhz.dailyus.utils.show
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -22,5 +24,13 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNavMain.setupWithNavController(navController)
+    }
+
+    fun showBottomNav() {
+        binding.bottomNavMain.show()
+    }
+
+    fun hideBottomNav() {
+        binding.bottomNavMain.hide()
     }
 }

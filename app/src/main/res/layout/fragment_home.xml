@@ -60,20 +60,6 @@
         app:layout_constraintTop_toBottomOf="@id/home_line" />
 
     <TextView
-        android:id="@+id/home_tv_empty_stories"
-        style="@style/DefaultRegularText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stories_empty_message"
-        android:textColor="@color/my_purple_200"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_line" />
-
-    <TextView
         android:id="@+id/home_tv_error_stories"
         style="@style/DefaultRegularText"
         android:layout_width="wrap_content"

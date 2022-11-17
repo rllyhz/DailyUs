@@ -3,7 +3,6 @@ package id.rllyhz.dailyus.presentation.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.rllyhz.dailyus.data.preferences.AuthPreferences
 import id.rllyhz.dailyus.data.source.DailyStoriesRepository
@@ -23,7 +22,7 @@ class MainViewModel @Inject constructor(
     fun getEmail(): LiveData<String> = authPreferences.userEmail
 
     fun getStories(token: String) =
-        dailyStoriesRepository.getStories(token).cachedIn(viewModelScope)
+        dailyStoriesRepository.fetchStories(token)
 
     fun logout() = viewModelScope.launch {
         authPreferences.clear()

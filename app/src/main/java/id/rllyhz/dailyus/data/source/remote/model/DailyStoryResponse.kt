@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 data class DailyStoryResponse(
     @Json(name = "listStory")
-    val stories: List<StoryListResponse>,
+    val listStory: List<StoryListResponse>,
 
     @Json(name = "error")
     val isError: Boolean,
@@ -30,8 +30,8 @@ data class StoryListResponse(
     val id: String,
 
     @Json(name = "lat")
-    val latitude: Double? = null,
+    val lat: Double? = null,
 
     @Json(name = "lon")
-    val longitude: Double? = null
+    val lon: Double? = null
 )

@@ -9,16 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.FragmentHomeBinding
-import id.rllyhz.dailyus.presentation.adapter.BaseLoadingPagingAdapter
 import id.rllyhz.dailyus.presentation.adapter.StoriesAdapter
 import id.rllyhz.dailyus.presentation.ui.main.MainViewModel
 import id.rllyhz.dailyus.utils.hide
 import id.rllyhz.dailyus.utils.show
+import id.rllyhz.dailyus.utils.toEntities
+import id.rllyhz.dailyus.vo.Resource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -27,7 +27,6 @@ class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
     private val viewModel: MainViewModel by activityViewModels()
 
-    private var baseAdapter: BaseLoadingPagingAdapter? = null
     private var storiesAdapter: StoriesAdapter? = null
 
     override fun onCreateView(
@@ -57,62 +56,42 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
 
         binding = null
-        baseAdapter = null
         storiesAdapter = null
     }
 
     private fun loadData() {
         viewModel.getToken().observe(viewLifecycleOwner) { token ->
             lifecycleScope.launch {
-                viewModel.getStories(token).collectLatest {
-                    storiesAdapter?.submitData(it)
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            storiesAdapter?.loadStateFlow?.collectLatest { loadState ->
-                binding?.run {
-                    when (loadState.refresh) {
-                        is LoadState.Loading -> {
-                            homeProgressbarLoading.show()
-                            homeTvEmptyStories.hide()
-                            homeTvErrorStories.hide()
-                            homeRvStories.hide()
-                            homeBtnTryAgain.hide()
-                        }
-                        is LoadState.Error -> {
-                            if (storiesAdapter != null && storiesAdapter?.itemCount == 0) {
-                                homeProgressbarLoading.hide()
-                                homeRvStories.hide()
+                viewModel.getStories(token).collectLatest { resource ->
+                    binding?.run {
+                        when (resource) {
+                            is Resource.Loading -> {
+                                homeProgressbarLoading.show()
                                 homeTvErrorStories.hide()
-                                homeTvEmptyStories.show()
-                                homeBtnTryAgain.setOnClickListener {
-                                    storiesAdapter?.retry()
-                                }
-                                homeBtnTryAgain.show()
-                            } else {
-                                homeProgressbarLoading.hide()
-                                homeTvEmptyStories.hide()
-                                homeTvErrorStories.show()
-                                homeBtnTryAgain.setOnClickListener {
-                                    storiesAdapter?.retry()
-                                }
-                                homeBtnTryAgain.show()
-                                Log.e("HomeFragment", "Error: ${loadState.refresh}")
+                                homeRvStories.hide()
+                                homeBtnTryAgain.hide()
+                                Log.e("HomeFragment", "Loading: ${resource.message}")
                             }
-                        }
-                        is LoadState.NotLoading -> {
-                            homeProgressbarLoading.hide()
-                            homeTvEmptyStories.hide()
-                            homeTvErrorStories.hide()
-                            homeBtnTryAgain.hide()
-                            homeRvStories.show()
+                            is Resource.Error -> {
+                                homeProgressbarLoading.hide()
+                                homeTvErrorStories.show()
+                                homeBtnTryAgain.show()
+                                Log.e("HomeFragment", "Error: ${resource.message}")
+                            }
+                            is Resource.Success -> {
+                                homeProgressbarLoading.hide()
+                                homeTvErrorStories.hide()
+                                homeBtnTryAgain.hide()
+                                storiesAdapter?.submitList(resource.data?.listStory?.toEntities())
+                                homeRvStories.show()
+                                Log.e("HomeFragment", "Data: ${resource.data}")
+                            }
                         }
                     }
                 }
             }
         }
+
     }
 
     private fun setAdapter() {
@@ -129,9 +108,7 @@ class HomeFragment : Fragment() {
         binding?.run {
             storiesAdapter?.let { sAdapter ->
                 homeRvStories.also { rv ->
-                    rv.adapter = sAdapter.withLoadStateFooter(
-                        footer = BaseLoadingPagingAdapter { sAdapter.retry() }
-                    )
+                    rv.adapter = sAdapter
                     rv.layoutManager = LinearLayoutManager(requireActivity())
                 }
             }

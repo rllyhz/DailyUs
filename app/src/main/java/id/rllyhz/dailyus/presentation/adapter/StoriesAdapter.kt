@@ -2,8 +2,8 @@ package id.rllyhz.dailyus.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -12,9 +12,11 @@ import com.facebook.shimmer.ShimmerDrawable
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.databinding.ItemStoryBinding
+import id.rllyhz.dailyus.utils.formatDate
 import java.util.*
 
-class StoriesAdapter : PagingDataAdapter<StoryEntity, StoriesAdapter.StoriesViewModel>(DIFF_UTIL) {
+class StoriesAdapter :
+    ListAdapter<StoryEntity, StoriesAdapter.StoriesViewModel>(DIFF_UTIL) {
 
     var onClick: ((story: StoryEntity) -> Unit)? = null
 
@@ -69,8 +71,8 @@ class StoriesAdapter : PagingDataAdapter<StoryEntity, StoriesAdapter.StoriesView
                     else firstChar.toString()
                 }
 
-
-                itemStoryTvDate.text = story.createdAt
+                itemStoryTvDate.text = formatDate(story.createdAt)
+                itemStoryTvDescription.text = story.description
             }
         }
     }

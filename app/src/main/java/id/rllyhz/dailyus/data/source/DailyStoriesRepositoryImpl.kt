@@ -1,12 +1,5 @@
 package id.rllyhz.dailyus.data.source
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import id.rllyhz.dailyus.data.mediator.DailyStoriesMediator
-import id.rllyhz.dailyus.data.source.local.db.DailyUsDatabase
-import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.data.source.remote.model.DailyStoryResponse
 import id.rllyhz.dailyus.data.source.remote.model.UploadStoryResponse
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
@@ -19,37 +12,19 @@ import okhttp3.RequestBody
 import javax.inject.Inject
 
 class DailyStoriesRepositoryImpl @Inject constructor(
-    private val storiesApi: DailyUsStoriesApiService,
-    private val db: DailyUsDatabase
+    private val storiesApi: DailyUsStoriesApiService
 ) : DailyStoriesRepository {
-
-    @ExperimentalPagingApi
-    override fun getStories(token: String): Flow<PagingData<StoryEntity>> =
-        Pager(
-            config = PagingConfig(pageSize = 10),
-            remoteMediator = DailyStoriesMediator(
-                storiesApi,
-                db,
-                "Bearer $token"
-            ),
-            pagingSourceFactory = { db.storiesDao().getStories() }
-        ).flow
 
     override fun fetchStories(token: String): Flow<Resource<DailyStoryResponse>> =
         channelFlow {
             send(Resource.Loading())
 
-            try {
-                val responseData = storiesApi.getStories(
-                    token = "Bearer $token",
-                    size = 30,
-                    location = 1
-                )
-                send(Resource.Success(responseData))
-
-            } catch (e: Exception) {
-                send(Resource.Error(e.message.toString()))
-            }
+            val responseData = storiesApi.getStories(
+                token = "Bearer $token",
+                size = 30,
+                location = 1
+            )
+            send(Resource.Success(responseData))
         }
 
     override fun uploadNewStory(
