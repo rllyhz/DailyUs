@@ -25,6 +25,7 @@
             android:layout_height="230dp"
             android:background="@color/my_purple_500"
             android:contentDescription="@string/icon_logo_content_description_example"
+            android:transitionName="@string/card_story_user_full_name_example"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
