@@ -8,7 +8,15 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="id.rllyhz.dailyus.presentation.ui.home.HomeFragment"
-        android:label="@string/title_home" />
+        android:label="@string/title_home">
+        <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/postFragment"
         android:name="id.rllyhz.dailyus.presentation.ui.post.PostFragment"
@@ -32,4 +40,13 @@
         android:name="id.rllyhz.dailyus.presentation.ui.auth.AuthActivity"
         android:label="activity_auth"
         tools:layout="@layout/activity_auth" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="id.rllyhz.dailyus.presentation.ui.home.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="story"
+            app:argType="id.rllyhz.dailyus.data.source.local.model.StoryEntity" />
+    </fragment>
 </navigation>
