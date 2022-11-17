@@ -4,9 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="32dp"
-    android:layout_marginBottom="16dp"
-    android:paddingHorizontal="16dp"
     tools:context=".presentation.ui.auth.SplashFragment">
 
     <TextView
@@ -14,7 +11,8 @@
         style="@style/ProfileEmailTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="0"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/profile_email_example"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,29 +23,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:alpha="0"
         android:text="@string/profile_full_name_example"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/profile_tv_email"
         app:layout_constraintTop_toBottomOf="@id/profile_tv_email" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/profile_btn_change_language"
+        style="@style/OutlinedButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/button_change_language"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_tv_full_name" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/profile_btn_logout"
         style="@style/OutlinedButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:alpha="0"
+        android:layout_marginHorizontal="16dp"
         android:text="@string/button_logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/profile_progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/profile_btn_change_language" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
