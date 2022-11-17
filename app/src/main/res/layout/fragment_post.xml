@@ -4,48 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.auth.SplashFragment">
+    tools:context=".presentation.ui.post.PostFragment">
 
     <TextView
-        android:id="@+id/home_tv_greeting_user"
-        style="@style/HomeGreetingUserTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/home_greeting_user_example"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/home_tv_greeting_headline"
-        style="@style/HomeGreetingHeadlineTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/home_greeting_headline"
-        app:layout_constraintStart_toStartOf="@id/home_tv_greeting_user"
-        app:layout_constraintTop_toBottomOf="@id/home_tv_greeting_user" />
-
-    <View
-        android:id="@+id/home_line"
-        android:layout_width="184dp"
-        android:layout_height="5dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/bg_rounded"
-        app:layout_constraintStart_toStartOf="@id/home_tv_greeting_user"
-        app:layout_constraintTop_toBottomOf="@id/home_tv_greeting_headline" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:clipToPadding="false"
-        android:paddingTop="16dp"
+        android:text="@string/title_post"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_line"
-        tools:itemCount="20"
-        tools:listitem="@layout/item_story" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
