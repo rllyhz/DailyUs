@@ -5,6 +5,7 @@
     <string name="on_boarding_heading">@string/app_name</string>
     <string name="on_boarding_sub_heading">Ekspresikan Kenanganmu Dengan Membagikannya Pada Dunia</string>
     <string name="home_greeting_user">Halo, %s!</string>
+    <string name="home_greeting_user_example">Halo, Rully!</string>
     <string name="home_greeting_headline">Bagikan Kenanganmu Hari Ini.</string>
     <string name="upload_photo_preview">Hasil Foto</string>
     <string name="profile_email_example">rullyihza00@gmail.com</string>
@@ -65,7 +66,7 @@
     <string name="password_hint">Password</string>
     <string name="description_hint">Berikan deskripsi…</string>
 
-    <!-- Edit Text Invalid message -->
+    <!-- Error or invalid state message -->
     <string name="name_empty_message">Nama tidak boleh kosong</string>
     <string name="email_empty_message">Email tidak boleh kosong</string>
     <string name="password_empty_message">Password tidak boleh kosong</string>
