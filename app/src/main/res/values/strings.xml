@@ -3,7 +3,7 @@
 
     <!-- Data -->
     <string name="on_boarding_heading">@string/app_name</string>
-    <string name="on_boarding_sub_heading">Ekspresikan Kenanganmu Dengan Membagikannya Pada Teman</string>
+    <string name="on_boarding_sub_heading">Ekspresikan Kenanganmu Dengan Membagikannya Pada Dunia</string>
     <string name="home_greeting_user">Halo, %s!</string>
     <string name="home_greeting_headline">Bagikan Kenanganmu Hari Ini.</string>
     <string name="upload_photo_preview">Hasil Foto</string>
@@ -28,6 +28,7 @@
     <string name="button_register">Daftar</string>
     <string name="button_login">Masuk</string>
     <string name="button_logout">Keluar</string>
+    <string name="button_change_language">Ubah bahasa</string>
     <string name="button_upload">Unggah</string>
     <string name="button_take_picture">Kamera</string>
     <string name="button_pick_from_gallery">Galeri</string>
