@@ -64,7 +64,7 @@ class AuthPreferences @Inject constructor(
      */
     suspend fun saveUserFullName(fullName: String) {
         _dataStore.edit { preferences ->
-            preferences[USER_TOKEN_KEY] = fullName
+            preferences[USER_FULL_NAME_KEY] = fullName
         }
     }
 
@@ -84,7 +84,7 @@ class AuthPreferences @Inject constructor(
      */
     suspend fun saveUserEmail(email: String) {
         _dataStore.edit { preferences ->
-            preferences[USER_TOKEN_KEY] = email
+            preferences[USER_EMAIL_KEY] = email
         }
     }
 
