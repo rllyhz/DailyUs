@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/item_base_paging_tv_error_msg"
+        style="@style/DefaultRegularText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textColor="?android:textColorPrimary"
+        tools:text="Timeout" />
+
+    <ProgressBar
+        android:id="@+id/item_base_paging_progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/item_base_paging_btn_retry_button"
+        style="@style/OutlinedButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:text="@string/button_try_again" />
+</LinearLayout>

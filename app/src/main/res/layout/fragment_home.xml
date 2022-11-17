@@ -4,15 +4,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.auth.SplashFragment">
+    tools:context=".presentation.ui.home.HomeFragment">
 
     <TextView
+        android:id="@+id/home_tv_greeting_user"
+        style="@style/HomeGreetingUserTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_home"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/home_greeting_user_example"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/home_tv_greeting_headline"
+        style="@style/HomeGreetingHeadlineTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_greeting_headline"
+        app:layout_constraintStart_toStartOf="@id/home_tv_greeting_user"
+        app:layout_constraintTop_toBottomOf="@id/home_tv_greeting_user" />
+
+    <View
+        android:id="@+id/home_line"
+        android:layout_width="184dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_rounded"
+        app:layout_constraintStart_toStartOf="@id/home_tv_greeting_user"
+        app:layout_constraintTop_toBottomOf="@id/home_tv_greeting_headline" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_rv_stories"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/home_line"
+        tools:itemCount="20"
+        tools:listitem="@layout/item_story" />
+
+    <ProgressBar
+        android:id="@+id/home_progressbar_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_line" />
+
+    <TextView
+        android:id="@+id/home_tv_empty_stories"
+        style="@style/DefaultRegularText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stories_empty_message"
+        android:textColor="@color/my_purple_200"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_line" />
+
+    <TextView
+        android:id="@+id/home_tv_error_stories"
+        style="@style/DefaultRegularText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/internal_error_message"
+        android:textColor="@color/my_purple_200"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_line" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/home_btn_try_again"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/button_try_again"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_tv_empty_stories" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
