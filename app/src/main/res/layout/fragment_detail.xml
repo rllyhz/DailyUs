@@ -6,13 +6,87 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.home.DetailFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_detail"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <include
+        android:id="@+id/layout_top_bar"
+        layout="@layout/layout_custom_top_bar" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/detail_iv_image"
+        android:layout_width="0dp"
+        android:layout_height="230dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@color/my_purple_500"
+        android:contentDescription="@string/icon_logo_content_description_example"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/layout_top_bar"
+        app:shapeAppearance="@style/RoundedImageShape" />
+
+    <TextView
+        android:id="@+id/detail_tv_full_name"
+        style="@style/DetailFullNameTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/card_story_user_full_name_example"
+        android:textAlignment="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_iv_image" />
+
+    <TextView
+        android:id="@+id/detail_tv_date"
+        style="@style/DetailDateTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/card_story_date_example"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_tv_full_name" />
+
+    <TextView
+        android:id="@+id/detail_tv_description"
+        style="@style/DetailDescriptionTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/card_story_description_example"
+        android:textAlignment="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_tv_date" />
+
+    <View
+        android:id="@+id/detail_line"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_rounded_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_tv_description" />
+
+    <TextView
+        android:id="@+id/detail_tv_lat_lon_label"
+        style="@style/DetailCoordinatesLabelTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/detail_lat_lon_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_line" />
+
+    <TextView
+        android:id="@+id/detail_tv_lat_lon"
+        style="@style/DetailCoordinatesValueTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/detail_lat_lon_example"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_tv_lat_lon_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
