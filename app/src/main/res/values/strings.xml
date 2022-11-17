@@ -76,5 +76,7 @@
     <string name="wrong_credential_message">Email atau password salah</string>
     <string name="email_already_taken_message">Email sudah terdaftar</string>
     <string name="internal_error_message">Maaf, telah terjadi kesalahan</string>
+    <string name="button_try_again">Coba lagi</string>
+    <string name="stories_empty_message">Tidak ada cerita</string>
     <!-- END OF UI -->
 </resources>
