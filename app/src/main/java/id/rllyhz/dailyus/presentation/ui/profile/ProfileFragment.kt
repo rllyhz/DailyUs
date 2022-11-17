@@ -19,8 +19,6 @@ class ProfileFragment : Fragment() {
     private var binding: FragmentProfileBinding? = null
     private val viewModel: MainViewModel by activityViewModels()
 
-    private val animDuration = 1000L
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,5 +53,10 @@ class ProfileFragment : Fragment() {
                 findNavController().navigate(R.id.action_profileFragment_to_authActivity)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }
