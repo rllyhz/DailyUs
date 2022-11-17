@@ -36,7 +36,9 @@ class StoriesAdapter : PagingDataAdapter<StoryEntity, StoriesAdapter.StoriesView
 
         init {
             binding.root.setOnClickListener {
-                getItem(bindingAdapterPosition)?.let { story -> onClick?.invoke(story) }
+                getItem(bindingAdapterPosition)?.let { story ->
+                    onClick?.invoke(story)
+                }
             }
         }
 
@@ -66,6 +68,7 @@ class StoriesAdapter : PagingDataAdapter<StoryEntity, StoriesAdapter.StoriesView
                     if (firstChar.isLowerCase()) firstChar.titlecase(Locale.getDefault())
                     else firstChar.toString()
                 }
+
 
                 itemStoryTvDate.text = story.createdAt
             }

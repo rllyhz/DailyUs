@@ -17,7 +17,7 @@
         android:layout_marginHorizontal="16dp"
         android:background="@color/my_purple_500"
         android:contentDescription="@string/icon_logo_content_description_example"
-        android:transitionName="@string/detail_transition_name_example"
+        android:transitionName="@string/transition_name_image_example"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_top_bar"

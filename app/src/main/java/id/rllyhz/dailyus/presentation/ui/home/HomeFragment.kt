@@ -117,11 +117,11 @@ class HomeFragment : Fragment() {
 
     private fun setAdapter() {
         storiesAdapter = StoriesAdapter()
-        storiesAdapter?.onClick = {
+        storiesAdapter?.onClick = { story ->
             findNavController().navigate(
                 R.id.action_homeFragment_to_detailFragment,
                 Bundle().apply {
-                    putParcelable(DetailFragment.STORY_KEY, it)
+                    putParcelable(DetailFragment.STORY_KEY, story)
                 }
             )
         }
