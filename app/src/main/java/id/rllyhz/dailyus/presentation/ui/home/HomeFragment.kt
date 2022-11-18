@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,8 +21,10 @@ import id.rllyhz.dailyus.utils.hide
 import id.rllyhz.dailyus.utils.show
 import id.rllyhz.dailyus.utils.toEntities
 import id.rllyhz.dailyus.vo.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -41,67 +45,72 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setUI()
         setAdapter()
+        setViewModel()
+    }
 
+    private fun setUI() {
+        binding?.run {
+            homeBtnTryAgain.setOnClickListener {
+                //
+            }
+        }
+    }
+
+    private fun setViewModel() {
         binding?.run {
             viewModel.getFullName().observe(viewLifecycleOwner) {
                 homeTvGreetingUser.text = getString(R.string.home_greeting_user, it)
             }
 
-            loadData()
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        binding = null
-        storiesAdapter = null
-    }
-
-    private fun loadData() {
-        viewModel.getToken().observe(viewLifecycleOwner) { token ->
-            lifecycleScope.launch {
-                viewModel.getStories(token).collectLatest { resource ->
-                    binding?.run {
-                        when (resource) {
-                            is Resource.Loading -> {
-                                homeProgressbarLoading.show()
-                                homeTvErrorStories.hide()
-                                homeRvStories.hide()
-                                homeBtnTryAgain.hide()
-                                Log.e("HomeFragment", "Loading: ${resource.message}")
-                            }
-                            is Resource.Error -> {
-                                homeProgressbarLoading.hide()
-                                homeTvErrorStories.show()
-                                homeBtnTryAgain.show()
-                                Log.e("HomeFragment", "Error: ${resource.message}")
-                            }
-                            is Resource.Success -> {
-                                homeProgressbarLoading.hide()
-                                homeTvErrorStories.hide()
-                                homeBtnTryAgain.hide()
-                                storiesAdapter?.submitList(resource.data?.listStory?.toEntities())
-                                homeRvStories.show()
-                                Log.e("HomeFragment", "Data: ${resource.data}")
+            viewModel.getToken().observe(viewLifecycleOwner) { token ->
+                lifecycleScope.launch {
+                    viewModel.fetchStories(token).collectLatest { resource ->
+                        binding?.run {
+                            when (resource) {
+                                is Resource.Loading -> withContext(Dispatchers.Main) {
+                                    homeProgressbarLoading.show()
+                                    homeTvErrorStories.hide()
+                                    homeRvStories.hide()
+                                    homeBtnTryAgain.hide()
+                                    Log.d("HomeFragment", "Loading: ${resource.message}")
+                                }
+                                is Resource.Error -> withContext(Dispatchers.Main) {
+                                    homeProgressbarLoading.hide()
+                                    homeTvErrorStories.show()
+                                    homeBtnTryAgain.show()
+                                    Log.e("HomeFragment", "Error: ${resource.message}")
+                                }
+                                is Resource.Success -> withContext(Dispatchers.Main) {
+                                    homeProgressbarLoading.hide()
+                                    homeTvErrorStories.hide()
+                                    homeBtnTryAgain.hide()
+                                    storiesAdapter?.submitList(resource.data?.listStory?.toEntities())
+                                    waitForTransition(homeRvStories)
+                                    homeRvStories.show()
+                                    Log.i("HomeFragment", "Success: ${resource.message}")
+                                }
                             }
                         }
                     }
                 }
             }
         }
-
     }
 
     private fun setAdapter() {
         storiesAdapter = StoriesAdapter()
-        storiesAdapter?.onClick = { story ->
+        storiesAdapter?.onClick = { imageView, story ->
             findNavController().navigate(
                 R.id.action_homeFragment_to_detailFragment,
                 Bundle().apply {
                     putParcelable(DetailFragment.STORY_KEY, story)
-                }
+                },
+                null,
+                FragmentNavigatorExtras(
+                    imageView to imageView.transitionName
+                )
             )
         }
 
@@ -113,5 +122,17 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun waitForTransition(targetView: View) {
+        postponeEnterTransition()
+        targetView.doOnPreDraw { startPostponedEnterTransition() }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        binding = null
+        storiesAdapter = null
     }
 }

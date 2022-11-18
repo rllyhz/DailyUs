@@ -2,6 +2,7 @@ package id.rllyhz.dailyus.presentation.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,17 @@ import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.databinding.FragmentDetailBinding
 import id.rllyhz.dailyus.presentation.ui.main.MainActivity
 import id.rllyhz.dailyus.utils.formatDate
+import id.rllyhz.dailyus.utils.getTransitionName
 import java.util.*
 
 class DetailFragment : Fragment() {
     private var binding: FragmentDetailBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,14 +47,12 @@ class DetailFragment : Fragment() {
 
             val story = arguments?.getParcelable<StoryEntity>(STORY_KEY)
 
-            story?.name?.let {
-                detailTvFullName.text = it.replaceFirstChar { firstChar ->
+            story?.let {
+                detailTvFullName.text = it.name.replaceFirstChar { firstChar ->
                     if (firstChar.isLowerCase()) firstChar.titlecase(Locale.getDefault())
                     else firstChar.toString()
                 }
-            }
 
-            story?.photoUrl?.let { photo ->
                 val shimmerEffect = Shimmer
                     .AlphaHighlightBuilder()
                     .setDuration(1600)
@@ -61,23 +67,26 @@ class DetailFragment : Fragment() {
                 }
 
                 Glide.with(requireContext())
-                    .load(photo)
+                    .load(it.photoUrl)
                     .placeholder(shimmerDrawable)
                     .error(R.drawable.bg_rounded)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(detailIvImage)
+
+                val defaultTransitionName = getString(R.string.transition_name_image_example)
+                detailIvImage.transitionName = getTransitionName(defaultTransitionName, it.id)
+
+                detailTvDescription.text = it.description
+                detailTvDate.text = formatDate(it.createdAt)
+
+                detailTvLatLon.text = if (it.latitude != null && it.longitude != null) {
+                    getString(
+                        R.string.detail_lat_lon,
+                        story.latitude.toString(),
+                        story.longitude.toString()
+                    )
+                } else "-"
             }
-
-            detailTvDescription.text = story?.description
-            detailTvDate.text = formatDate(story?.createdAt)
-
-            detailTvLatLon.text = if (story?.latitude != null && story.longitude != null) {
-                getString(
-                    R.string.detail_lat_lon,
-                    story.latitude.toString(),
-                    story.longitude.toString()
-                )
-            } else "-"
         }
     }
 

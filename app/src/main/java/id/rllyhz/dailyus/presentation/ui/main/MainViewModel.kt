@@ -21,8 +21,7 @@ class MainViewModel @Inject constructor(
 
     fun getEmail(): LiveData<String> = authPreferences.userEmail
 
-    fun getStories(token: String) =
-        dailyStoriesRepository.fetchStories(token)
+    fun fetchStories(token: String) = dailyStoriesRepository.fetchStories(token)
 
     fun logout() = viewModelScope.launch {
         authPreferences.clear()

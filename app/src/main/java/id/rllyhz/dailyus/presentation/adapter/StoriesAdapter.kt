@@ -9,16 +9,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
+import com.google.android.material.imageview.ShapeableImageView
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.databinding.ItemStoryBinding
 import id.rllyhz.dailyus.utils.formatDate
+import id.rllyhz.dailyus.utils.getTransitionName
 import java.util.*
 
 class StoriesAdapter :
     ListAdapter<StoryEntity, StoriesAdapter.StoriesViewModel>(DIFF_UTIL) {
 
-    var onClick: ((story: StoryEntity) -> Unit)? = null
+    var onClick: ((imageView: ShapeableImageView, story: StoryEntity) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoriesViewModel =
         StoriesViewModel(
@@ -39,7 +41,7 @@ class StoriesAdapter :
         init {
             binding.root.setOnClickListener {
                 getItem(bindingAdapterPosition)?.let { story ->
-                    onClick?.invoke(story)
+                    onClick?.invoke(binding.itemStoryIvPost, story)
                 }
             }
         }
@@ -73,6 +75,10 @@ class StoriesAdapter :
 
                 itemStoryTvDate.text = formatDate(story.createdAt)
                 itemStoryTvDescription.text = story.description
+
+                val defaultTransitionName =
+                    itemView.context.getString(R.string.transition_name_image_example)
+                itemStoryIvPost.transitionName = getTransitionName(defaultTransitionName, story.id)
             }
         }
     }

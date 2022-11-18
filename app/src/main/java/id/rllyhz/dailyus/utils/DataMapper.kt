@@ -44,3 +44,6 @@ fun formatDate(date: String?): String? {
 
     return targetDate.toString()
 }
+
+fun getTransitionName(defaultName: String, addition: String) =
+    "$defaultName-$addition"
