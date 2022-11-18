@@ -46,6 +46,7 @@
 
     <!-- Content Description -->
     <string name="on_boarding_illustration_content_description">Ilustrasi berbagi kenangan bersama teman</string>
+    <string name="photo_preview_content_description">Hasil foto preview</string>
     <string name="button_content_description_example">Tombol</string>
     <string name="icon_content_description_example">Ikon</string>
     <string name="button_register_content_description_example">@string/button_register</string>

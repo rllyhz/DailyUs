@@ -4,15 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp"
     tools:context=".presentation.ui.post.PostFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_post"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/post_iv_preview_image"
+        android:layout_width="0dp"
+        android:layout_height="230dp"
+        android:background="@color/my_grey_200"
+        android:contentDescription="@string/photo_preview_content_description"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/RoundedImageShape" />
+
+    <TextView
+        android:id="@+id/post_tv_preview_label"
+        style="@style/PostPhotoPreviewLabelTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_photo_preview"
+        app:layout_constraintBottom_toBottomOf="@id/post_iv_preview_image"
+        app:layout_constraintEnd_toEndOf="@id/post_iv_preview_image"
+        app:layout_constraintStart_toStartOf="@id/post_iv_preview_image"
+        app:layout_constraintTop_toTopOf="@id/post_iv_preview_image" />
+
+    <LinearLayout
+        android:id="@+id/post_ll_buttons_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/post_iv_preview_image"
+        app:layout_constraintStart_toStartOf="@id/post_iv_preview_image"
+        app:layout_constraintTop_toBottomOf="@id/post_iv_preview_image">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/post_btn_take_picture"
+            style="@style/ButtonStyle.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/button_take_picture_content_description_example"
+            android:text="@string/button_take_picture" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/post_btn_pick_from_gallery"
+            style="@style/ButtonStyle.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/button_pick_from_gallery_content_description_example"
+            android:text="@string/button_pick_from_gallery" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/post_et_description"
+        style="@style/PostDescriptionTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_edit_text"
+        android:elevation="0dp"
+        android:gravity="start"
+        android:hint="@string/description_hint"
+        android:inputType="textLongMessage"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_ll_buttons_container" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/post_btn_upload"
+        style="@style/ButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/button_upload_content_description_example"
+        android:text="@string/button_upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
