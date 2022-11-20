@@ -32,6 +32,7 @@
         style="@style/OnBoardingHeadlineTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
         android:text="@string/on_boarding_sub_heading"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
