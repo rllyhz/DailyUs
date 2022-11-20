@@ -1,14 +1,84 @@
 package id.rllyhz.dailyus.presentation.ui.post
 
+import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import dagger.hilt.android.AndroidEntryPoint
+import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.FragmentPostBinding
+import id.rllyhz.dailyus.presentation.ui.main.MainViewModel
+import id.rllyhz.dailyus.presentation.ui.post.CameraActivity.Companion.CAMERA_X_RESULT_CODE
+import id.rllyhz.dailyus.presentation.ui.post.CameraActivity.Companion.IMAGE_FILE_EXTRA
+import id.rllyhz.dailyus.presentation.ui.post.CameraActivity.Companion.IS_BACK_CAMERA_MODE_EXTRA
+import id.rllyhz.dailyus.utils.*
+import id.rllyhz.dailyus.vo.Resource
+import id.rllyhz.dailyus.vo.UIState
+import java.io.File
 
+@AndroidEntryPoint
 class PostFragment : Fragment() {
     private var binding: FragmentPostBinding? = null
+    private val viewModel: MainViewModel by activityViewModels()
+
+    private var photoResult: Bitmap? = null
+    private var file: File? = null
+
+    private val launcherIntentForCameraX = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == CAMERA_X_RESULT_CODE) {
+            val resultFile = it.data?.getSerializableExtra(IMAGE_FILE_EXTRA) as File
+            val isBackCamera = it.data?.getBooleanExtra(IS_BACK_CAMERA_MODE_EXTRA, true) as Boolean
+
+            file = resultFile
+            file?.let { _file ->
+                photoResult = _file.getBitmap(isBackCamera)
+            }
+
+            binding?.run {
+                postBtnUpload.clickable()
+                postProgressbar.hide()
+                postIvPreviewImage.setImageBitmap(photoResult)
+                postIvPreviewImage.show()
+            }
+        }
+    }
+
+    private val launcherIntentForPickingFromGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+            val resourceUri = it.data?.data as Uri
+            file = resourceUri.toFile(requireContext())
+
+            binding?.run {
+                postBtnUpload.clickable()
+                postProgressbar.hide()
+                postIvPreviewImage.setImageURI(resourceUri)
+                postIvPreviewImage.show()
+            }
+        }
+    }
+
+    private fun isCameraPermissionGranted() = ALL_REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            requireContext(), it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,11 +92,126 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.run { }
+        if (!isCameraPermissionGranted()) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                ALL_REQUIRED_PERMISSIONS,
+                ALL_REQUEST_CODE_PERMISSION
+            )
+        }
+
+        binding?.run {
+            postBtnUpload.notClickable()
+            postProgressbar.hide()
+
+            postBtnTakePicture.setOnClickListener { takePicture() }
+            postBtnPickFromGallery.setOnClickListener { pickPhotoFromGallery() }
+
+            postBtnUpload.setOnClickListener {
+                postEtDescription.clearFocus()
+
+                (requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).also {
+                    it.hideSoftInputFromWindow(view.windowToken, 0)
+                }
+
+                val description = postEtDescription.text.toString()
+
+                if (description.isEmpty()) {
+                    showPostSnacbar(
+                        requireContext(),
+                        root,
+                        postBtnUpload,
+                        getString(R.string.description_empty_message)
+                    )
+                } else {
+                    uploadNewStory(description)
+                }
+            }
+
+            updateUI(UIState.HasData, null)
+        }
+    }
+
+    private fun uploadNewStory(description: String) {
+        file?.let {
+            val compressedImageFile = it.getCompressedImageFile()
+
+            viewModel.uploadStory(compressedImageFile, it.name, description)
+                .observe(viewLifecycleOwner) { resource ->
+                    when (resource) {
+                        is Resource.Loading -> updateUI(UIState.Loading, null)
+                        is Resource.Error -> updateUI(
+                            UIState.Error,
+                            getString(R.string.upload_failed_message)
+                        )
+                        is Resource.Success -> updateUI(
+                            UIState.HasData,
+                            getString(R.string.upload_success_message)
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun pickPhotoFromGallery() {
+        val intent = Intent().apply {
+            type = "image/*"
+            action = Intent.ACTION_GET_CONTENT
+        }
+
+        val chooser = Intent.createChooser(intent, getString(R.string.title_pick_from_gallery))
+        launcherIntentForPickingFromGallery.launch(chooser)
+    }
+
+    private fun takePicture() {
+        Intent(requireActivity(), CameraActivity::class.java).also {
+            launcherIntentForCameraX.launch(it)
+        }
+    }
+
+    private fun updateUI(uiState: UIState, messageToShow: String?) {
+        binding?.run {
+            when (uiState) {
+                UIState.Loading -> {
+                    postBtnUpload.notClickable()
+                    postProgressbar.show()
+                    postBtnTakePicture.notClickable()
+                    postBtnPickFromGallery.notClickable()
+                }
+                UIState.Error -> {
+                    postBtnUpload.notClickable()
+                    postProgressbar.hide()
+                    postBtnTakePicture.clickable()
+                    postBtnPickFromGallery.clickable()
+                }
+                UIState.HasData -> {
+                    postBtnUpload.notClickable()
+                    postProgressbar.hide()
+                    postBtnTakePicture.clickable()
+                    postBtnPickFromGallery.clickable()
+                }
+            }
+
+            messageToShow?.let {
+                showPostSnacbar(
+                    requireContext(),
+                    root,
+                    postBtnUpload,
+                    it
+                )
+
+                postBtnUpload.clickable()
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    companion object {
+        val ALL_REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        const val ALL_REQUEST_CODE_PERMISSION = 10
     }
 }

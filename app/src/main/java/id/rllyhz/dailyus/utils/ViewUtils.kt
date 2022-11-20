@@ -32,6 +32,33 @@ fun showAuthSnackBar(
     }.show()
 }
 
+fun showPostSnacbar(
+    context: Context,
+    view: View,
+    submitButton: MaterialButton,
+    message: String
+) {
+    Snackbar.make(
+        view,
+        message,
+        Snackbar.LENGTH_LONG
+    ).apply {
+        anchorView = submitButton
+
+        setBackgroundTint(
+            ContextCompat.getColor(context, R.color.my_purple_500)
+        )
+        setTextColor(
+            ContextCompat.getColor(context, R.color.white)
+        )
+
+        val customLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        customLayoutParams.setMargins(24, 16, 24, 16)
+        view.layoutParams = customLayoutParams
+
+    }.show()
+}
+
 fun View.show() {
     alpha = 1f
     visibility = View.VISIBLE
