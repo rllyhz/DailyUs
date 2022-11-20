@@ -36,7 +36,7 @@
     <string name="button_login">Masuk</string>
     <string name="button_logout">Keluar</string>
     <string name="button_change_language">Ubah bahasa</string>
-    <string name="button_upload">Unggah</string>
+    <string name="button_upload">Buat Story</string>
     <string name="button_take_picture">Kamera</string>
     <string name="button_pick_from_gallery">Galeri</string>
     <string name="button_on_boarding_next">Lanjutkan</string>
@@ -78,6 +78,7 @@
     <string name="email_empty_message">Email tidak boleh kosong</string>
     <string name="password_empty_message">Password tidak boleh kosong</string>
     <string name="description_empty_message">Deskripsi tidak boleh kosong</string>
+    <string name="photo_empty_message">Unggah foto terlebih dahulu</string>
     <string name="name_invalid_message">Nama tidak valid</string>
     <string name="email_invalid_message">Email tidak valid</string>
     <string name="password_invalid_message">Password tidak valid</string>

@@ -6,6 +6,7 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,6 +35,8 @@ class PostFragment : Fragment() {
     private var binding: FragmentPostBinding? = null
     private val viewModel: MainViewModel by activityViewModels()
 
+    private var isPhotoFromCamera = false
+
     private var photoResult: Bitmap? = null
     private var file: File? = null
 
@@ -47,13 +50,14 @@ class PostFragment : Fragment() {
             file = resultFile
             file?.let { _file ->
                 photoResult = _file.getBitmap(isBackCamera)
+                isPhotoFromCamera = true
             }
 
             binding?.run {
-                postBtnUpload.clickable()
                 postProgressbar.hide()
                 postIvPreviewImage.setImageBitmap(photoResult)
                 postIvPreviewImage.show()
+                postBtnUpload.clickable()
             }
         }
     }
@@ -64,12 +68,13 @@ class PostFragment : Fragment() {
         if (it.resultCode == RESULT_OK) {
             val resourceUri = it.data?.data as Uri
             file = resourceUri.toFile(requireContext())
+            isPhotoFromCamera = false
 
             binding?.run {
-                postBtnUpload.clickable()
                 postProgressbar.hide()
                 postIvPreviewImage.setImageURI(resourceUri)
                 postIvPreviewImage.show()
+                postBtnUpload.clickable()
             }
         }
     }
@@ -101,7 +106,6 @@ class PostFragment : Fragment() {
         }
 
         binding?.run {
-            postBtnUpload.notClickable()
             postProgressbar.hide()
 
             postBtnTakePicture.setOnClickListener { takePicture() }
@@ -116,8 +120,15 @@ class PostFragment : Fragment() {
 
                 val description = postEtDescription.text.toString()
 
-                if (description.isEmpty()) {
-                    showPostSnacbar(
+                if ((isPhotoFromCamera && photoResult == null) || file == null) {
+                    showPostSnackBar(
+                        requireContext(),
+                        root,
+                        postBtnUpload,
+                        getString(R.string.photo_empty_message)
+                    )
+                } else if (description.isEmpty()) {
+                    showPostSnackBar(
                         requireContext(),
                         root,
                         postBtnUpload,
@@ -177,23 +188,34 @@ class PostFragment : Fragment() {
                     postProgressbar.show()
                     postBtnTakePicture.notClickable()
                     postBtnPickFromGallery.notClickable()
+                    postBtnUpload.text = ""
                 }
                 UIState.Error -> {
-                    postBtnUpload.notClickable()
+                    postBtnUpload.clickable()
                     postProgressbar.hide()
                     postBtnTakePicture.clickable()
                     postBtnPickFromGallery.clickable()
+                    postBtnUpload.text = getString(R.string.button_upload)
                 }
                 UIState.HasData -> {
-                    postBtnUpload.notClickable()
+                    postBtnUpload.clickable()
                     postProgressbar.hide()
                     postBtnTakePicture.clickable()
                     postBtnPickFromGallery.clickable()
+                    postEtDescription.text.clear()
+                    postIvPreviewImage.setImageResource(0)
+                    postIvPreviewImage.background =
+                        ColorDrawable(
+                            ContextCompat.getColor(requireContext(), R.color.my_grey_200)
+                        )
+                    photoResult = null
+                    file = null
+                    postBtnUpload.text = getString(R.string.button_upload)
                 }
             }
 
             messageToShow?.let {
-                showPostSnacbar(
+                showPostSnackBar(
                     requireContext(),
                     root,
                     postBtnUpload,

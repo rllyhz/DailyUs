@@ -2,7 +2,6 @@ package id.rllyhz.dailyus.utils
 
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
@@ -25,14 +24,10 @@ fun showAuthSnackBar(
             ContextCompat.getColor(context, R.color.my_orange)
         )
 
-        val customLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        customLayoutParams.setMargins(24, 16, 24, 16)
-        view.layoutParams = customLayoutParams
-
     }.show()
 }
 
-fun showPostSnacbar(
+fun showPostSnackBar(
     context: Context,
     view: View,
     submitButton: MaterialButton,
@@ -51,10 +46,6 @@ fun showPostSnacbar(
         setTextColor(
             ContextCompat.getColor(context, R.color.white)
         )
-
-        val customLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        customLayoutParams.setMargins(24, 16, 24, 16)
-        view.layoutParams = customLayoutParams
 
     }.show()
 }
