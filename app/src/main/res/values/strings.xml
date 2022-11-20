@@ -43,8 +43,12 @@
 
     <!-- Dialog -->
     <string name="dialog_title_register_success">Berhasil mendaftar</string>
-    <string name="dialog_message_register_success">Anda telah terdaftar! Silahkan login</string>
+    <string name="dialog_message_register_success">Kamu telah terdaftar! \nSilahkan login dan buatlah ceritamu yang berkesan</string>
     <string name="dialog_positive_action_register_success">Baik</string>
+    <string name="dialog_title_logout_confirm">Apakah kamu yakin keluar?</string>
+    <string name="dialog_message_logout_confirm">Kamu nantinya perlu melakukan proses login lagi untuk mengakses aplikasi jika melanjutkan proses ini.</string>
+    <string name="dialog_positive_action_logout_confirm">Baik</string>
+    <string name="dialog_negative_action_logout_confirm">Batal</string>
 
     <!-- Content Description -->
     <string name="on_boarding_illustration_content_description">Ilustrasi berbagi kenangan bersama teman</string>
