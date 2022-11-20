@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
 
         setUI()
         setAdapter()
@@ -115,7 +116,7 @@ class HomeFragment : Fragment() {
                 },
                 null,
                 FragmentNavigatorExtras(
-                    imageView to imageView.transitionName
+                    imageView to imageView.transitionName,
                 )
             )
         }
@@ -131,7 +132,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun waitForTransition(targetView: View) {
-        postponeEnterTransition()
         targetView.doOnPreDraw { startPostponedEnterTransition() }
     }
 

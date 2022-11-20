@@ -76,9 +76,9 @@ class StoriesAdapter :
                 itemStoryTvDate.text = formatDate(story.createdAt)
                 itemStoryTvDescription.text = story.description
 
-                val defaultTransitionName =
-                    itemView.context.getString(R.string.transition_name_image_example)
-                itemStoryIvPost.transitionName = getTransitionName(defaultTransitionName, story.id)
+                val transitionNameOfImage =
+                    itemView.context.getString(R.string.transition_name_of_image)
+                itemStoryIvPost.transitionName = getTransitionName(transitionNameOfImage, story.id)
             }
         }
     }

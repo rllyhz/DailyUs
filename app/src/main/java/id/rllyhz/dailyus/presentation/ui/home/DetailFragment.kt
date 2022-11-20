@@ -27,6 +27,8 @@ class DetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
     }
 
     override fun onCreateView(
@@ -73,8 +75,8 @@ class DetailFragment : Fragment() {
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(detailIvImage)
 
-                val defaultTransitionName = getString(R.string.transition_name_image_example)
-                detailIvImage.transitionName = getTransitionName(defaultTransitionName, it.id)
+                val transitionNameOfImage = getString(R.string.transition_name_of_image)
+                detailIvImage.transitionName = getTransitionName(transitionNameOfImage, it.id)
 
                 detailTvDescription.text = it.description
                 detailTvDate.text = formatDate(it.createdAt)

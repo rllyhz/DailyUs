@@ -17,7 +17,7 @@
     <string name="detail_lat_lon_label">Koordinat :</string>
     <string name="detail_lat_lon_example">12.33334, 32545.44</string>
     <string name="detail_lat_lon">%s, %s</string>
-    <string name="transition_name_image_example">image</string>
+    <string name="transition_name_of_image">image</string>
     <!-- END OF Data -->
 
     <!-- UI -->
