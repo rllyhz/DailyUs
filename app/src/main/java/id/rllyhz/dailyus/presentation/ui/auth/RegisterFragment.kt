@@ -37,7 +37,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.run {
-            layoutTopBar.topBarTvTitle.text = getString(R.string.title_login)
+            layoutTopBar.topBarTvTitle.text = getString(R.string.title_register)
             layoutTopBar.topBarBtnBack.setOnClickListener { findNavController().navigateUp() }
 
             registerEtEmail.setErrorMessage(getString(R.string.email_invalid_message))

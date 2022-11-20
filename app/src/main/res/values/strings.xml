@@ -89,6 +89,7 @@
     <string name="wrong_credential_message">Wrong email or password</string>
     <string name="email_already_taken_message">Email has already taken</string>
     <string name="internal_error_message">Sorry, It went wrong internally</string>
+    <string name="login_success_message">Successfully logged in</string>
     <string name="button_try_again">Try again</string>
     <string name="stories_empty_message">There is no stories yet</string>
     <string name="upload_success_message">Successfully added new story</string>

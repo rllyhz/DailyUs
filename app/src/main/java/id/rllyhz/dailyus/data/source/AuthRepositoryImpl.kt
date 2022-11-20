@@ -27,7 +27,11 @@ class AuthRepositoryImpl @Inject constructor(
 
                 val responseData = authApi.loginUser(userMap)
 
-                emit(Resource.Success(responseData))
+                if (responseData.isError) {
+                    emit(Resource.Error(responseData.message))
+                } else {
+                    emit(Resource.Success(responseData))
+                }
 
             } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
@@ -36,7 +40,6 @@ class AuthRepositoryImpl @Inject constructor(
                     val responseJson = JSONObject(errorBody)
                     val message = responseJson.getString("message")
                     // val isError = responseJson.getBoolean("error")
-
                     emit(Resource.Error(message))
                 } else {
                     emit(Resource.Error(e.message.toString()))
@@ -62,7 +65,12 @@ class AuthRepositoryImpl @Inject constructor(
                 )
 
                 val responseData = authApi.registerNewUser(newUserMap)
-                emit(Resource.Success(responseData))
+
+                if (responseData.isError) {
+                    emit(Resource.Error(responseData.message))
+                } else {
+                    emit(Resource.Success(responseData))
+                }
 
             } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
@@ -71,7 +79,6 @@ class AuthRepositoryImpl @Inject constructor(
                     val responseJson = JSONObject(errorBody)
                     val message = responseJson.getString("message")
                     // val isError = responseJson.getBoolean("error")
-
                     emit(Resource.Error(message))
                 } else {
                     emit(Resource.Error(e.message.toString()))
