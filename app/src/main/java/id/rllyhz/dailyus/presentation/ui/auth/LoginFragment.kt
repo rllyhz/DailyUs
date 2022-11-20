@@ -140,7 +140,7 @@ class LoginFragment : Fragment() {
 
         resourceMessage?.let {
             binding?.let { bnView ->
-                if (it == "HTTP 401 Unauthorized") {
+                if (it == "User not found" || it == "Invalid password" || it == "HTTP 401 Unauthorized") {
                     showAuthSnackBar(
                         requireActivity(),
                         bnView.root,

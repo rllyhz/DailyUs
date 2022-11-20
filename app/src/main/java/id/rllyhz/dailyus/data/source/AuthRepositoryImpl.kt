@@ -6,6 +6,8 @@ import id.rllyhz.dailyus.data.source.remote.network.DailyUsAuthApiService
 import id.rllyhz.dailyus.vo.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.json.JSONObject
+import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,8 +26,21 @@ class AuthRepositoryImpl @Inject constructor(
                 )
 
                 val responseData = authApi.loginUser(userMap)
+
                 emit(Resource.Success(responseData))
 
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+
+                if (errorBody != null) {
+                    val responseJson = JSONObject(errorBody)
+                    val message = responseJson.getString("message")
+                    // val isError = responseJson.getBoolean("error")
+
+                    emit(Resource.Error(message))
+                } else {
+                    emit(Resource.Error(e.message.toString()))
+                }
             } catch (e: Exception) {
                 emit(Resource.Error(e.message.toString()))
             }
@@ -49,6 +64,18 @@ class AuthRepositoryImpl @Inject constructor(
                 val responseData = authApi.registerNewUser(newUserMap)
                 emit(Resource.Success(responseData))
 
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+
+                if (errorBody != null) {
+                    val responseJson = JSONObject(errorBody)
+                    val message = responseJson.getString("message")
+                    // val isError = responseJson.getBoolean("error")
+
+                    emit(Resource.Error(message))
+                } else {
+                    emit(Resource.Error(e.message.toString()))
+                }
             } catch (e: Exception) {
                 emit(Resource.Error(e.message.toString()))
             }

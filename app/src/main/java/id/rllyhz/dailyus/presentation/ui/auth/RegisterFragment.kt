@@ -141,27 +141,47 @@ class RegisterFragment : Fragment() {
 
         resourceMessage?.let {
             binding?.let { bnView ->
-                if (it == "HTTP 401 Unauthorized") {
-                    showAuthSnackBar(
-                        requireActivity(),
-                        bnView.root,
-                        bnView.registerBtnSubmit,
-                        getString(R.string.wrong_credential_message)
-                    )
-                } else if (it == "Email is already taken") {
-                    showAuthSnackBar(
-                        requireActivity(),
-                        bnView.root,
-                        bnView.registerBtnSubmit,
-                        getString(R.string.email_already_taken_message)
-                    )
-                } else {
-                    showAuthSnackBar(
-                        requireActivity(),
-                        bnView.root,
-                        bnView.registerBtnSubmit,
-                        getString(R.string.internal_error_message)
-                    )
+                when (it) {
+                    "HTTP 401 Unauthorized" -> {
+                        showAuthSnackBar(
+                            requireActivity(),
+                            bnView.root,
+                            bnView.registerBtnSubmit,
+                            getString(R.string.wrong_credential_message)
+                        )
+                    }
+                    "Email is already taken" -> {
+                        showAuthSnackBar(
+                            requireActivity(),
+                            bnView.root,
+                            bnView.registerBtnSubmit,
+                            getString(R.string.email_already_taken_message)
+                        )
+                    }
+                    "\"email\" must be a valid email" -> {
+                        showAuthSnackBar(
+                            requireActivity(),
+                            bnView.root,
+                            bnView.registerBtnSubmit,
+                            getString(R.string.email_invalid_message)
+                        )
+                    }
+                    "Password must be at least 6 characters long" -> {
+                        showAuthSnackBar(
+                            requireActivity(),
+                            bnView.root,
+                            bnView.registerBtnSubmit,
+                            getString(R.string.password_invalid_message)
+                        )
+                    }
+                    else -> {
+                        showAuthSnackBar(
+                            requireActivity(),
+                            bnView.root,
+                            bnView.registerBtnSubmit,
+                            getString(R.string.internal_error_message)
+                        )
+                    }
                 }
             }
         }

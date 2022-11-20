@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
     private fun setUI() {
         binding?.run {
             homeBtnTryAgain.setOnClickListener {
-                //
+                loadStories()
             }
         }
     }
@@ -64,8 +64,14 @@ class HomeFragment : Fragment() {
                 homeTvGreetingUser.text = getString(R.string.home_greeting_user, it)
             }
 
+            loadStories()
+        }
+    }
+
+    private fun loadStories() {
+        binding?.run {
             viewModel.getToken().observe(viewLifecycleOwner) { token ->
-                lifecycleScope.launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     viewModel.fetchStories(token).collectLatest { resource ->
                         binding?.run {
                             when (resource) {

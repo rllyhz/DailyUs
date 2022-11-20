@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import id.rllyhz.dailyus.BuildConfig
 import id.rllyhz.dailyus.data.preferences.AuthPreferences
 import id.rllyhz.dailyus.data.source.AuthRepository
 import id.rllyhz.dailyus.data.source.AuthRepositoryImpl
@@ -36,6 +37,7 @@ object AppModule {
         OkHttpClient.Builder().apply {
             val loggingInterceptor = HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY)
+                .apply { if (!BuildConfig.DEBUG) setLevel(HttpLoggingInterceptor.Level.NONE) }
 
             addInterceptor(loggingInterceptor)
 
