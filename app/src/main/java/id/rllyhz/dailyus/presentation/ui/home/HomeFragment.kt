@@ -90,12 +90,22 @@ class HomeFragment : Fragment() {
                                     Log.e("HomeFragment", "Error: ${resource.message}")
                                 }
                                 is Resource.Success -> withContext(Dispatchers.Main) {
+                                    val listStory = resource.data?.listStory
+
                                     homeProgressbarLoading.hide()
                                     homeTvErrorStories.hide()
                                     homeBtnTryAgain.hide()
-                                    storiesAdapter?.submitList(resource.data?.listStory?.toEntities())
-                                    waitForTransition(homeRvStories)
-                                    homeRvStories.show()
+
+                                    if (listStory.isNullOrEmpty()) {
+                                        homeTvErrorStories.text =
+                                            getString(R.string.stories_empty_message)
+                                        homeTvErrorStories.show()
+                                        homeRvStories.hide()
+                                    } else {
+                                        storiesAdapter?.submitList(resource.data.listStory.toEntities())
+                                        waitForTransition(homeRvStories)
+                                        homeRvStories.show()
+                                    }
                                     Log.i("HomeFragment", "Success: ${resource.message}")
                                 }
                             }
