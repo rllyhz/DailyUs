@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/my_grey_200">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <StackView
+            android:id="@+id/widget_stories_banner_stack_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:layout_weight="9"
+            android:loopViews="true" />
+
+        <TextView
+            android:id="@+id/widget_stories_banner_tv_title"
+            style="@style/WidgetStoriesBannerTitleTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/widget_stories_banner_title" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/widget_stories_banner_tv_message"
+        style="@style/WidgetStoriesBannerMessageTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/widget_stories_banner_empty_message"
+        android:visibility="gone" />
+
+</FrameLayout>

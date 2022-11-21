@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">DailyUs</string>
     <string name="temp_file_name">@string/app_name</string>
+    <string name="widget_stories_banner_title">Today Stories</string>
+    <string name="widget_stories_banner_description">Daily stories for your daily inspirations</string>
+    <string name="widget_stories_banner_empty_message">There is no stories yet</string>
+    <string name="widget_stories_banner_error_message">Something went wrong :(</string>
+    <string name="widget_stories_banner_item_clicked_message">You clicked story %d</string>
 
     <!-- Data -->
     <string name="on_boarding_heading">@string/app_name</string>

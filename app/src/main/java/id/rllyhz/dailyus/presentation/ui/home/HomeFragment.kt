@@ -1,6 +1,7 @@
 package id.rllyhz.dailyus.presentation.ui.home
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,9 +20,9 @@ import id.rllyhz.dailyus.presentation.adapter.StoriesAdapter
 import id.rllyhz.dailyus.presentation.ui.main.MainViewModel
 import id.rllyhz.dailyus.utils.hide
 import id.rllyhz.dailyus.utils.show
-import id.rllyhz.dailyus.utils.toEntities
 import id.rllyhz.dailyus.vo.Resource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,11 +34,16 @@ class HomeFragment : Fragment() {
 
     private var storiesAdapter: StoriesAdapter? = null
 
+    private var job: Job? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
         binding = FragmentHomeBinding.inflate(inflater)
         return binding?.root
     }
@@ -57,6 +63,8 @@ class HomeFragment : Fragment() {
                 loadStories()
             }
         }
+
+        loadStories()
     }
 
     private fun setViewModel() {
@@ -64,15 +72,17 @@ class HomeFragment : Fragment() {
             viewModel.getFullName().observe(viewLifecycleOwner) {
                 homeTvGreetingUser.text = getString(R.string.home_greeting_user, it)
             }
-
-            loadStories()
         }
     }
 
     private fun loadStories() {
         binding?.run {
             viewModel.getToken().observe(viewLifecycleOwner) { token ->
-                lifecycleScope.launch(Dispatchers.IO) {
+
+                job?.cancel()
+                job = null
+
+                job = lifecycleScope.launch(Dispatchers.IO) {
                     viewModel.fetchStories(token).collectLatest { resource ->
                         binding?.run {
                             when (resource) {
@@ -90,19 +100,19 @@ class HomeFragment : Fragment() {
                                     Log.e("HomeFragment", "Error: ${resource.message}")
                                 }
                                 is Resource.Success -> withContext(Dispatchers.Main) {
-                                    val listStory = resource.data?.listStory
+                                    val stories = resource.data
 
                                     homeProgressbarLoading.hide()
                                     homeTvErrorStories.hide()
                                     homeBtnTryAgain.hide()
 
-                                    if (listStory.isNullOrEmpty()) {
+                                    if (stories.isNullOrEmpty()) {
                                         homeTvErrorStories.text =
                                             getString(R.string.stories_empty_message)
                                         homeTvErrorStories.show()
                                         homeRvStories.hide()
                                     } else {
-                                        storiesAdapter?.submitList(resource.data.listStory.toEntities())
+                                        storiesAdapter?.submitList(stories)
                                         waitForTransition(homeRvStories)
                                         homeRvStories.show()
                                     }
@@ -147,6 +157,9 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        job?.cancel()
+        job = null
 
         binding = null
         storiesAdapter = null

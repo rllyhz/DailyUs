@@ -2,6 +2,11 @@
 <resources>
     <string name="app_name">DailyUs</string>
     <string name="temp_file_name">@string/app_name</string>
+    <string name="widget_stories_banner_title">Story Hari Ini</string>
+    <string name="widget_stories_banner_description">Story harian untuk menginspirasi tiap harimu</string>
+    <string name="widget_stories_banner_empty_message">Belum ada cerita</string>
+    <string name="widget_stories_banner_error_message">Maaf, gagal mengakses story :(</string>
+    <string name="widget_stories_banner_item_clicked_message">Kamu menekan story ke-%d</string>
 
     <!-- Data -->
     <string name="on_boarding_heading">@string/app_name</string>

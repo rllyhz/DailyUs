@@ -108,4 +108,17 @@
     </style>
 
     <style name="PostDescriptionTextStyle" parent="PostPhotoPreviewLabelTextStyle" />
+
+    <style name="WidgetStoriesBannerTitleTextStyle" parent="DefaultMediumText">
+        <item name="android:textColor">@color/my_purple_700</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="WidgetStoriesBannerMessageTextStyle" parent="WidgetStoriesBannerTitleTextStyle">
+        <item name="android:textColor">@color/my_purple_200</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

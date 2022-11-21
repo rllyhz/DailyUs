@@ -1,8 +1,10 @@
 package id.rllyhz.dailyus.data.source
 
-import id.rllyhz.dailyus.data.source.remote.model.DailyStoryResponse
+import id.rllyhz.dailyus.data.source.local.db.DailyStoriesDatabase
+import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.data.source.remote.model.UploadStoryResponse
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
+import id.rllyhz.dailyus.utils.toEntities
 import id.rllyhz.dailyus.vo.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,12 +15,15 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 class DailyStoriesRepositoryImpl @Inject constructor(
-    private val storiesApi: DailyUsStoriesApiService
+    private val storiesApi: DailyUsStoriesApiService,
+    private val storiesDB: DailyStoriesDatabase
 ) : DailyStoriesRepository {
 
-    override fun fetchStories(token: String): Flow<Resource<DailyStoryResponse>> =
+    override fun fetchStories(token: String): Flow<Resource<List<StoryEntity>>> =
         flow {
             emit(Resource.Loading())
+
+            val storiesInDB = storiesDB.getStoriesDao().getStories()
 
             try {
                 val responseData = storiesApi.getStories(
@@ -30,22 +35,33 @@ class DailyStoriesRepositoryImpl @Inject constructor(
                 if (responseData.isError) {
                     emit(Resource.Error(responseData.message))
                 } else {
-                    emit(Resource.Success(responseData))
+                    val storiesAsEntity = responseData.listStory.toEntities()
+                    storiesDB.getStoriesDao().insertOrReplaceAll(storiesAsEntity)
+
+                    emit(Resource.Success(storiesAsEntity))
                 }
 
             } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
+                if (storiesInDB.isNotEmpty()) {
+                    emit(Resource.Success(storiesInDB))
+                } else {
+                    val errorBody = e.response()?.errorBody()?.string()
 
-                if (errorBody != null) {
-                    val responseJson = JSONObject(errorBody)
-                    val message = responseJson.getString("message")
-                    // val isError = responseJson.getBoolean("error")
-                    emit(Resource.Error(message))
+                    if (errorBody != null) {
+                        val responseJson = JSONObject(errorBody)
+                        val message = responseJson.getString("message")
+                        // val isError = responseJson.getBoolean("error")
+                        emit(Resource.Error(message))
+                    } else {
+                        emit(Resource.Error(e.message.toString()))
+                    }
+                }
+            } catch (e: Exception) {
+                if (storiesInDB.isNotEmpty()) {
+                    emit(Resource.Success(storiesInDB))
                 } else {
                     emit(Resource.Error(e.message.toString()))
                 }
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message.toString()))
             }
         }
 
