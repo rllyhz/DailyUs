@@ -55,6 +55,10 @@ fun File.getCompressedImageFile(): File {
     return this
 }
 
+val File.size get(): Double = if (exists()) length().toDouble() else 0.0
+val File.sizeInKb get() = size / 1024
+val File.sizeInMb get() = sizeInKb / 1024
+
 fun Uri.toFile(context: Context): File {
     val contentResolver = context.contentResolver
     val file = createCustomTempFile(context)

@@ -99,5 +99,6 @@
     <string name="stories_empty_message">There is no stories yet</string>
     <string name="upload_success_message">Successfully added new story</string>
     <string name="upload_failed_message">Failed to add new story</string>
+    <string name="upload_image_size_too_large_message">Please provide image with size less then 1 mb</string>
     <!-- END OF UI -->
 </resources>

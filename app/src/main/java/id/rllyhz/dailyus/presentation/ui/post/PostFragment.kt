@@ -147,6 +147,11 @@ class PostFragment : Fragment() {
         file?.let {
             val compressedImageFile = it.getCompressedImageFile()
 
+            if (compressedImageFile.sizeInMb > 1) {
+                updateUI(UIState.Error, getString(R.string.upload_image_size_too_large_message))
+                return
+            }
+
             viewModel.uploadStory(compressedImageFile, it.name, description)
                 .observe(viewLifecycleOwner) { resource ->
                     when (resource) {

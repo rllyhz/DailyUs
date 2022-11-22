@@ -100,5 +100,6 @@
     <string name="stories_empty_message">Belum ada cerita</string>
     <string name="upload_success_message">Berhasil menambahkan story baru</string>
     <string name="upload_failed_message">Gagal menambahkan story</string>
+    <string name="upload_image_size_too_large_message">Oppss… Ukuran foto kamu lebih dari 1 mb nih!</string>
     <!-- END OF UI -->
 </resources>

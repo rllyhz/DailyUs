@@ -42,7 +42,7 @@ interface DailyUsStoriesApiService {
         @Header("Authorization") token: String,
         @Part photo: MultipartBody.Part,
         @Part("description") description: RequestBody,
-        @Part("lat") latitude: RequestBody?,
-        @Part("lon") longitude: RequestBody?,
+        @Part("lat") latitude: RequestBody? = null,
+        @Part("lon") longitude: RequestBody? = null,
     ): UploadStoryResponse
 }

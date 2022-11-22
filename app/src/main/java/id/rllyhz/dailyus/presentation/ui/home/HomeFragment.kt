@@ -41,6 +41,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
 
@@ -76,6 +78,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadStories() {
+
         binding?.run {
             viewModel.getToken().observe(viewLifecycleOwner) { token ->
 
