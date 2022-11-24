@@ -74,6 +74,7 @@ class MainViewModel @Inject constructor(
                         stories.postValue(Resource.Success(data))
                     }
                 }
+                else -> Unit
             }
         }
     }
@@ -83,18 +84,19 @@ class MainViewModel @Inject constructor(
         imageFile: File, filename: String, description: String,
         imageTooLargeCallback: (size: Double) -> Unit
     ) = viewModelScope.launch(Dispatchers.IO) {
+        uploadStoryResponse.postValue(Resource.Loading())
+
         _shouldHandleUploadStoryEvent = true
 
         val compressedImageFile = imageFile.getCompressedImageFile()
         val size = compressedImageFile.sizeInMb
 
         if (size > 1) {
+            uploadStoryResponse.postValue(Resource.Initial())
             imageTooLargeCallback.invoke(size.formattedSize)
             cancel()
             return@launch
         }
-
-        uploadStoryResponse.postValue(Resource.Loading())
 
         val reqBodyImage = imageFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val reqBodyDesc = description.toRequestBody("text/plain".toMediaTypeOrNull())
@@ -118,6 +120,7 @@ class MainViewModel @Inject constructor(
                     val data = result.data ?: UploadStoryResponse(false, "")
                     uploadStoryResponse.postValue(Resource.Success(data))
                 }
+                else -> Unit
             }
         }
     }

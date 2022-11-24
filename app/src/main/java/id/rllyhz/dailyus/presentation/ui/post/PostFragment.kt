@@ -130,7 +130,7 @@ class PostFragment : Fragment() {
                     if (shouldHandleUploadStoryEvent)
                         findNavController().navigate(R.id.homeFragment)
                 }
-                else -> Unit
+                else -> updateUI(UIState.Error)
             }
         }
 

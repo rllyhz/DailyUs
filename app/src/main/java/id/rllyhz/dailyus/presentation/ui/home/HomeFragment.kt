@@ -88,6 +88,7 @@ class HomeFragment : Fragment() {
                     }
                     Log.i("HomeFragment", "Success: ${resource.message}")
                 }
+                else -> Unit
             }
         }
 

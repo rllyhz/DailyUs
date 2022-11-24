@@ -109,6 +109,7 @@ class LoginFragment : Fragment() {
                         requireActivity().finish()
                     }
                 }
+                else -> Unit
             }
         }
     }

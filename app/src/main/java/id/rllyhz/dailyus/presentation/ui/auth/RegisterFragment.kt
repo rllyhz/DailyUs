@@ -116,6 +116,7 @@ class RegisterFragment : Fragment() {
                             }
                             .show()
                     }
+                    else -> Unit
                 }
             }
     }
