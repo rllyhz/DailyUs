@@ -30,7 +30,7 @@ fun showAuthSnackBar(
 fun showPostSnackBar(
     context: Context,
     view: View,
-    submitButton: MaterialButton,
+    anchor: View,
     message: String
 ) {
     Snackbar.make(
@@ -38,7 +38,7 @@ fun showPostSnackBar(
         message,
         Snackbar.LENGTH_LONG
     ).apply {
-        anchorView = submitButton
+        anchorView = anchor
 
         setBackgroundTint(
             ContextCompat.getColor(context, R.color.my_purple_500)

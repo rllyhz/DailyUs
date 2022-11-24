@@ -28,6 +28,21 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavMain.setupWithNavController(navController)
 
+        binding.bottomNavMain.setOnItemSelectedListener { menu ->
+            when (menu.itemId) {
+                R.id.homeFragment -> {
+                    navController.navigate(R.id.homeFragment)
+                }
+                R.id.postFragment -> {
+                    navController.navigate(R.id.postFragment)
+                }
+                R.id.profileFragment -> {
+                    navController.navigate(R.id.profileFragment)
+                }
+            }
+            true
+        }
+
         binding.bottomNavMain.setOnItemReselectedListener {
             when (it.itemId) {
                 R.id.homeFragment -> {
@@ -37,11 +52,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun getBottomNav() = binding.bottomNavMain
+
     fun showBottomNav() {
         binding.bottomNavMain.show()
     }
 
     fun hideBottomNav() {
         binding.bottomNavMain.hide()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return false
     }
 }

@@ -17,9 +17,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.FragmentPostBinding
+import id.rllyhz.dailyus.presentation.ui.main.MainActivity
 import id.rllyhz.dailyus.presentation.ui.main.MainViewModel
 import id.rllyhz.dailyus.presentation.ui.post.CameraActivity.Companion.CAMERA_X_RESULT_CODE
 import id.rllyhz.dailyus.presentation.ui.post.CameraActivity.Companion.IMAGE_FILE_EXTRA
@@ -115,10 +117,20 @@ class PostFragment : Fragment() {
                     UIState.Error,
                     if (viewModel.shouldHandleUploadStoryEvent()) getString(R.string.upload_failed_message) else null
                 )
-                is Resource.Success -> updateUI(
-                    UIState.HasData,
-                    if (viewModel.shouldHandleUploadStoryEvent()) getString(R.string.upload_success_message) else null
-                )
+                is Resource.Success -> {
+                    val shouldHandleUploadStoryEvent = viewModel.shouldHandleUploadStoryEvent()
+
+                    updateUI(
+                        UIState.HasData,
+                        if (shouldHandleUploadStoryEvent) getString(R.string.upload_success_message) else null,
+                        (requireActivity() as MainActivity).getBottomNav()
+                    )
+
+                    // navigate back to the home
+                    if (shouldHandleUploadStoryEvent)
+                        findNavController().navigate(R.id.homeFragment)
+                }
+                else -> Unit
             }
         }
 
@@ -156,7 +168,7 @@ class PostFragment : Fragment() {
                 }
             }
 
-            updateUI(UIState.HasData, null)
+            updateUI(UIState.HasData)
         }
     }
 
@@ -190,7 +202,11 @@ class PostFragment : Fragment() {
         }
     }
 
-    private fun updateUI(uiState: UIState, messageToShow: String?) {
+    private fun updateUI(
+        uiState: UIState,
+        messageToShow: String? = null,
+        anchorView: View? = null
+    ) {
         binding?.run {
             when (uiState) {
                 UIState.Loading -> {
@@ -228,7 +244,7 @@ class PostFragment : Fragment() {
                 showPostSnackBar(
                     requireContext(),
                     root,
-                    postBtnUpload,
+                    anchorView ?: postBtnUpload,
                     it
                 )
 
