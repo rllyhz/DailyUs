@@ -104,11 +104,17 @@ class HomeFragment : Fragment() {
     private fun setUI() {
         binding?.run {
             homeBtnTryAgain.setOnClickListener {
-                viewModel.loadStories()
+                viewModel.getToken().observe(viewLifecycleOwner) { token ->
+                    if (token.isNotBlank() && token.isNotEmpty())
+                        viewModel.loadStories(token)
+                }
             }
         }
 
-        viewModel.loadStories()
+        viewModel.getToken().observe(viewLifecycleOwner) { token ->
+            if (token.isNotBlank() && token.isNotEmpty())
+                viewModel.loadStories(token)
+        }
     }
 
     private fun setViewModel() = binding?.run {

@@ -48,14 +48,14 @@ class MainViewModel @Inject constructor(
         scrollToTopEventCallback?.invoke()
     }
 
+    fun getToken(): LiveData<String> = authPreferences.userToken
+
     fun getFullName(): LiveData<String> = authPreferences.userFullName
 
     fun getEmail(): LiveData<String> = authPreferences.userEmail
 
-    fun loadStories() = viewModelScope.launch(Dispatchers.IO) {
+    fun loadStories(token: String) = viewModelScope.launch(Dispatchers.IO) {
         stories.postValue(Resource.Loading())
-
-        val token = authPreferences.getUserToken()
 
         dailyStoriesRepository.fetchStories(token).cancellable().collectLatest { result ->
             when (result) {
@@ -79,6 +79,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun uploadStory(
+        token: String,
         imageFile: File, filename: String, description: String,
         imageTooLargeCallback: (size: Double) -> Unit
     ) = viewModelScope.launch(Dispatchers.IO) {
@@ -94,8 +95,6 @@ class MainViewModel @Inject constructor(
         }
 
         uploadStoryResponse.postValue(Resource.Loading())
-
-        val token = authPreferences.getUserToken()
 
         val reqBodyImage = imageFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val reqBodyDesc = description.toRequestBody("text/plain".toMediaTypeOrNull())

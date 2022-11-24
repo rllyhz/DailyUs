@@ -38,9 +38,6 @@ class AuthPreferences @Inject constructor(
         preferences[USER_TOKEN_KEY] ?: ""
     }.distinctUntilChanged().asLiveData()
 
-    suspend fun getUserToken(): String =
-        _dataStore.data.first()[USER_TOKEN_KEY] ?: ""
-
     /*
      * Save user token
      *

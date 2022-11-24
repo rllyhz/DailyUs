@@ -173,11 +173,14 @@ class PostFragment : Fragment() {
     }
 
     private fun uploadNewStory(description: String) = file?.let {
-        viewModel.uploadStory(it, it.name, description) { size ->
-            updateUI(
-                UIState.Error,
-                getString(R.string.upload_image_size_too_large_message) + " ($size mb)"
-            )
+        viewModel.getToken().observe(viewLifecycleOwner) { token ->
+            if (token.isNotBlank() && token.isNotEmpty())
+                viewModel.uploadStory(token, it, it.name, description) { size ->
+                    updateUI(
+                        UIState.Error,
+                        getString(R.string.upload_image_size_too_large_message) + " ($size mb)"
+                    )
+                }
         }
     }
 
