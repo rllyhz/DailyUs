@@ -14,10 +14,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.FragmentPostBinding
@@ -33,12 +32,20 @@ import java.io.File
 @AndroidEntryPoint
 class PostFragment : Fragment() {
     private var binding: FragmentPostBinding? = null
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     private var isPhotoFromCamera = false
 
     private var photoResult: Bitmap? = null
     private var file: File? = null
+
+    private val cameraRequestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (!granted) {
+            updateUI(UIState.Error, "Permission tidak diizinkan :(")
+        }
+    }
 
     private val launcherIntentForCameraX = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -98,11 +105,21 @@ class PostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (!isCameraPermissionGranted()) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                ALL_REQUIRED_PERMISSIONS,
-                ALL_REQUEST_CODE_PERMISSION
-            )
+            cameraRequestPermission.launch(ALL_REQUIRED_PERMISSIONS[0])
+        }
+
+        viewModel.uploadStoryResponse.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> updateUI(UIState.Loading, null)
+                is Resource.Error -> updateUI(
+                    UIState.Error,
+                    if (viewModel.shouldHandleUploadStoryEvent()) getString(R.string.upload_failed_message) else null
+                )
+                is Resource.Success -> updateUI(
+                    UIState.HasData,
+                    if (viewModel.shouldHandleUploadStoryEvent()) getString(R.string.upload_success_message) else null
+                )
+            }
         }
 
         binding?.run {
@@ -143,29 +160,12 @@ class PostFragment : Fragment() {
         }
     }
 
-    private fun uploadNewStory(description: String) {
-        file?.let {
-            val compressedImageFile = it.getCompressedImageFile()
-
-            if (compressedImageFile.sizeInMb > 1) {
-                updateUI(UIState.Error, getString(R.string.upload_image_size_too_large_message))
-                return
-            }
-
-            viewModel.uploadStory(compressedImageFile, it.name, description)
-                .observe(viewLifecycleOwner) { resource ->
-                    when (resource) {
-                        is Resource.Loading -> updateUI(UIState.Loading, null)
-                        is Resource.Error -> updateUI(
-                            UIState.Error,
-                            getString(R.string.upload_failed_message)
-                        )
-                        is Resource.Success -> updateUI(
-                            UIState.HasData,
-                            getString(R.string.upload_success_message)
-                        )
-                    }
-                }
+    private fun uploadNewStory(description: String) = file?.let {
+        viewModel.uploadStory(it, it.name, description) { size ->
+            updateUI(
+                UIState.Error,
+                getString(R.string.upload_image_size_too_large_message) + " ($size mb)"
+            )
         }
     }
 
@@ -180,6 +180,11 @@ class PostFragment : Fragment() {
     }
 
     private fun takePicture() {
+        if (!isCameraPermissionGranted()) {
+            cameraRequestPermission.launch(ALL_REQUIRED_PERMISSIONS[0])
+            return
+        }
+
         Intent(requireActivity(), CameraActivity::class.java).also {
             launcherIntentForCameraX.launch(it)
         }
@@ -235,10 +240,11 @@ class PostFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+        photoResult = null
+        file = null
     }
 
     companion object {
         val ALL_REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        const val ALL_REQUEST_CODE_PERMISSION = 10
     }
 }

@@ -12,6 +12,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.HttpException
+import java.io.IOException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class DailyStoriesRepositoryImpl @Inject constructor(
@@ -23,7 +25,8 @@ class DailyStoriesRepositoryImpl @Inject constructor(
         flow {
             emit(Resource.Loading())
 
-            val storiesInDB = storiesDB.getStoriesDao().getStories()
+            val dao = storiesDB.getStoriesDao()
+            val storiesInDB = dao.getStories()
 
             try {
                 val responseData = storiesApi.getStories(
@@ -32,16 +35,26 @@ class DailyStoriesRepositoryImpl @Inject constructor(
                     location = 1
                 )
 
-                if (responseData.isError) {
-                    emit(Resource.Error(responseData.message))
-                } else {
-                    val storiesAsEntity = responseData.listStory.toEntities()
-                    storiesDB.getStoriesDao().insertOrReplaceAll(storiesAsEntity)
+                val stories = responseData.listStory.toEntities()
 
-                    emit(Resource.Success(storiesAsEntity))
+                if (stories.isEmpty() && storiesInDB.isEmpty()) {
+                    emit(Resource.Error(responseData.message))
+                } else if (stories.isNotEmpty()) {
+                    dao.deleteAll()
+                    dao.insertAll(stories)
+                    emit(Resource.Success(stories))
+                } else {
+                    emit(Resource.Success(storiesInDB))
                 }
 
+            } catch (e: UnknownHostException) {
+                if (storiesInDB.isNotEmpty()) {
+                    emit(Resource.Success(storiesInDB))
+                } else {
+                    emit(Resource.Error(e.message.toString()))
+                }
             } catch (e: HttpException) {
+                println("HttpException")
                 if (storiesInDB.isNotEmpty()) {
                     emit(Resource.Success(storiesInDB))
                 } else {
@@ -56,6 +69,13 @@ class DailyStoriesRepositoryImpl @Inject constructor(
                         emit(Resource.Error(e.message.toString()))
                     }
                 }
+            } catch (e: IOException) {
+                if (storiesInDB.isNotEmpty()) {
+                    emit(Resource.Success(storiesInDB))
+                } else {
+                    emit(Resource.Error(e.message.toString()))
+                }
+                println("IOException: " + e.message.toString())
             } catch (e: Exception) {
                 if (storiesInDB.isNotEmpty()) {
                     emit(Resource.Success(storiesInDB))
@@ -90,6 +110,8 @@ class DailyStoriesRepositoryImpl @Inject constructor(
                     emit(Resource.Success(responseData))
                 }
 
+            } catch (e: UnknownHostException) {
+                emit(Resource.Error("No Internet"))
             } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
 

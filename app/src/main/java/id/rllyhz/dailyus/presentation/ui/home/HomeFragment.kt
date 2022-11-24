@@ -8,8 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,20 +20,13 @@ import id.rllyhz.dailyus.presentation.ui.main.MainViewModel
 import id.rllyhz.dailyus.utils.hide
 import id.rllyhz.dailyus.utils.show
 import id.rllyhz.dailyus.vo.Resource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     private var storiesAdapter: StoriesAdapter? = null
-
-    private var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,80 +44,67 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         postponeEnterTransition()
 
-        setUI()
+        setObservers()
         setAdapter()
         setViewModel()
+        setUI()
+    }
+
+    private fun setObservers() = binding?.run {
+        viewModel.stories.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    homeProgressbarLoading.show()
+                    homeTvErrorStories.hide()
+                    homeRvStories.hide()
+                    homeBtnTryAgain.hide()
+                    Log.d("HomeFragment", "Loading: ${resource.message}")
+                }
+                is Resource.Error -> {
+                    homeProgressbarLoading.hide()
+                    homeTvErrorStories.show()
+                    homeBtnTryAgain.show()
+                    Log.e("HomeFragment", "Error: ${resource.message}")
+                }
+                is Resource.Success -> {
+                    val stories = resource.data
+
+                    homeProgressbarLoading.hide()
+                    homeTvErrorStories.hide()
+                    homeBtnTryAgain.hide()
+
+                    if (stories.isNullOrEmpty()) {
+                        homeTvErrorStories.text =
+                            getString(R.string.stories_empty_message)
+                        homeTvErrorStories.show()
+                        homeRvStories.hide()
+                    } else {
+                        storiesAdapter?.submitList(stories)
+                        homeRvStories.show()
+                        waitForTransition(homeRvStories)
+                    }
+                    Log.i("HomeFragment", "Success: ${resource.message}")
+                }
+            }
+        }
     }
 
     private fun setUI() {
         binding?.run {
             homeBtnTryAgain.setOnClickListener {
-                loadStories()
+                viewModel.loadStories()
             }
         }
 
-        loadStories()
+        viewModel.loadStories()
     }
 
-    private fun setViewModel() {
-        binding?.run {
-            viewModel.getFullName().observe(viewLifecycleOwner) {
-                homeTvGreetingUser.text = getString(R.string.home_greeting_user, it)
-            }
-        }
-    }
-
-    private fun loadStories() {
-
-        binding?.run {
-            viewModel.getToken().observe(viewLifecycleOwner) { token ->
-
-                job?.cancel()
-                job = null
-
-                job = lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.fetchStories(token).collectLatest { resource ->
-                        binding?.run {
-                            when (resource) {
-                                is Resource.Loading -> withContext(Dispatchers.Main) {
-                                    homeProgressbarLoading.show()
-                                    homeTvErrorStories.hide()
-                                    homeRvStories.hide()
-                                    homeBtnTryAgain.hide()
-                                    Log.d("HomeFragment", "Loading: ${resource.message}")
-                                }
-                                is Resource.Error -> withContext(Dispatchers.Main) {
-                                    homeProgressbarLoading.hide()
-                                    homeTvErrorStories.show()
-                                    homeBtnTryAgain.show()
-                                    Log.e("HomeFragment", "Error: ${resource.message}")
-                                }
-                                is Resource.Success -> withContext(Dispatchers.Main) {
-                                    val stories = resource.data
-
-                                    homeProgressbarLoading.hide()
-                                    homeTvErrorStories.hide()
-                                    homeBtnTryAgain.hide()
-
-                                    if (stories.isNullOrEmpty()) {
-                                        homeTvErrorStories.text =
-                                            getString(R.string.stories_empty_message)
-                                        homeTvErrorStories.show()
-                                        homeRvStories.hide()
-                                    } else {
-                                        storiesAdapter?.submitList(stories)
-                                        waitForTransition(homeRvStories)
-                                        homeRvStories.show()
-                                    }
-                                    Log.i("HomeFragment", "Success: ${resource.message}")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    private fun setViewModel() = binding?.run {
+        viewModel.getFullName().observe(viewLifecycleOwner) {
+            homeTvGreetingUser.text = getString(R.string.home_greeting_user, it)
         }
     }
 
@@ -160,9 +139,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-        job?.cancel()
-        job = null
 
         binding = null
         storiesAdapter = null

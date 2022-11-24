@@ -45,7 +45,7 @@ class DetailFragment : Fragment() {
 
         binding?.run {
             layoutTopBar.topBarTvTitle.text = getString(R.string.title_detail)
-            layoutTopBar.topBarBtnBack.setOnClickListener { findNavController().navigateUp() }
+            layoutTopBar.topBarBtnBack.setOnClickListener { findNavController().popBackStack() }
 
             val story = arguments?.getParcelable<StoryEntity>(STORY_KEY)
 

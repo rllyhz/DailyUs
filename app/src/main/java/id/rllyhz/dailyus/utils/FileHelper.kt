@@ -58,6 +58,7 @@ fun File.getCompressedImageFile(): File {
 val File.size get(): Double = if (exists()) length().toDouble() else 0.0
 val File.sizeInKb get() = size / 1024
 val File.sizeInMb get() = sizeInKb / 1024
+val Double.formattedSize get() = String.format("%.2f", this).toDouble()
 
 fun Uri.toFile(context: Context): File {
     val contentResolver = context.contentResolver

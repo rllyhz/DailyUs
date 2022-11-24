@@ -73,7 +73,7 @@
         android:elevation="0dp"
         android:gravity="start"
         android:hint="@string/description_hint"
-        android:inputType="textLongMessage"
+        android:inputType="textMultiLine"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
