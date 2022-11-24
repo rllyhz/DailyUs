@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.rllyhz.dailyus.data.preferences.AuthPreferences
 import id.rllyhz.dailyus.data.source.DailyStoriesRepository
+import id.rllyhz.dailyus.data.source.local.db.DailyStoriesDatabase
 import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.data.source.remote.model.UploadStoryResponse
 import id.rllyhz.dailyus.utils.formattedSize
@@ -28,7 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val authPreferences: AuthPreferences,
-    private val dailyStoriesRepository: DailyStoriesRepository
+    private val dailyStoriesRepository: DailyStoriesRepository,
+    private val dailyStoriesDatabase: DailyStoriesDatabase
 ) : ViewModel() {
 
     val stories = MutableLiveData<Resource<List<StoryEntity>>>()
@@ -123,5 +125,6 @@ class MainViewModel @Inject constructor(
 
     fun logout() = viewModelScope.launch {
         authPreferences.clear()
+        dailyStoriesDatabase.getStoriesDao().deleteAll()
     }
 }
