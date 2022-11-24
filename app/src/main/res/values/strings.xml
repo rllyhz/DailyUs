@@ -97,6 +97,7 @@
     <string name="login_success_message">Successfully logged in</string>
     <string name="button_try_again">Try again</string>
     <string name="stories_empty_message">There is no stories yet</string>
+    <string name="upload_camera_permission_rejected_message">Camera access permission rejected</string>
     <string name="upload_success_message">Successfully added new story</string>
     <string name="upload_failed_message">Failed to add new story</string>
     <string name="upload_image_size_too_large_message">Please provide image with size less then 1 mb</string>

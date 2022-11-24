@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +24,7 @@ import id.rllyhz.dailyus.vo.Resource
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     private var storiesAdapter: StoriesAdapter? = null
 
@@ -88,6 +88,15 @@ class HomeFragment : Fragment() {
                     }
                     Log.i("HomeFragment", "Success: ${resource.message}")
                 }
+            }
+        }
+
+        viewModel.scrollToTopEventCallback = {
+            binding?.homeRvStories?.run {
+                val ableToScrollVertically = layoutManager?.canScrollVertically() ?: false
+
+                if (ableToScrollVertically)
+                    smoothScrollToPosition(0)
             }
         }
     }

@@ -35,14 +35,15 @@ class MainViewModel @Inject constructor(
     val uploadStoryResponse = MutableLiveData<Resource<UploadStoryResponse>>()
 
     private var _shouldHandleUploadStoryEvent = true
+    var scrollToTopEventCallback: (() -> Unit)? = null
 
-    fun shouldHandleUploadStoryEvent(): Boolean {
-        return if (_shouldHandleUploadStoryEvent) {
-            _shouldHandleUploadStoryEvent = false
-            true
-        } else {
-            false
-        }
+    fun shouldHandleUploadStoryEvent(): Boolean = if (_shouldHandleUploadStoryEvent) {
+        _shouldHandleUploadStoryEvent = false
+        true
+    } else false
+
+    fun addScrollToTopEvent() {
+        scrollToTopEventCallback?.invoke()
     }
 
     fun getFullName(): LiveData<String> = authPreferences.userFullName

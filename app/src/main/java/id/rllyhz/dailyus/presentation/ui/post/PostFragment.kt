@@ -43,7 +43,7 @@ class PostFragment : Fragment() {
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         if (!granted) {
-            updateUI(UIState.Error, "Permission tidak diizinkan :(")
+            updateUI(UIState.Error, getString(R.string.upload_camera_permission_rejected_message))
         }
     }
 
