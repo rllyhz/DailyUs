@@ -27,7 +27,7 @@ class AuthRepositoryImpl @Inject constructor(
 
                 val responseData = authApi.loginUser(userMap)
 
-                if (responseData.isError) {
+                if (responseData.error) {
                     emit(Resource.Error(responseData.message))
                 } else {
                     emit(Resource.Success(responseData))
@@ -66,7 +66,7 @@ class AuthRepositoryImpl @Inject constructor(
 
                 val responseData = authApi.registerNewUser(newUserMap)
 
-                if (responseData.isError) {
+                if (responseData.error) {
                     emit(Resource.Error(responseData.message))
                 } else {
                     emit(Resource.Success(responseData))

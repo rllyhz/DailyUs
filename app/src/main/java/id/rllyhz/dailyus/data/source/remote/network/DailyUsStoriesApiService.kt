@@ -18,7 +18,7 @@ interface DailyUsStoriesApiService {
      * @return DailyStoryResponse
      */
     @GET("stories")
-    suspend fun getStories(
+    suspend fun fetchStories(
         @Header("Authorization") token: String,
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null,

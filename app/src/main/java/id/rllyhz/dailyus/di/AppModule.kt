@@ -20,7 +20,7 @@ import id.rllyhz.dailyus.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -58,7 +58,7 @@ object AppModule {
     ): DailyUsAuthApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.apiBaseUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .client(apiClient)
             .build()
 
@@ -72,7 +72,7 @@ object AppModule {
     ): DailyUsStoriesApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.apiBaseUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .client(apiClient)
             .build()
 

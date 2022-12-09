@@ -29,7 +29,7 @@ class DailyStoriesRepositoryImpl @Inject constructor(
             val storiesInDB = dao.getStories()
 
             try {
-                val responseData = storiesApi.getStories(
+                val responseData = storiesApi.fetchStories(
                     token = "Bearer $token",
                     size = 30,
                     location = 1
@@ -104,7 +104,7 @@ class DailyStoriesRepositoryImpl @Inject constructor(
                     longitude
                 )
 
-                if (responseData.isError) {
+                if (responseData.error) {
                     emit(Resource.Error(responseData.message))
                 } else {
                     emit(Resource.Success(responseData))
