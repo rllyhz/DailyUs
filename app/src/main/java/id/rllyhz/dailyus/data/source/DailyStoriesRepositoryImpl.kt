@@ -32,7 +32,7 @@ class DailyStoriesRepositoryImpl @Inject constructor(
                 val responseData = storiesApi.fetchStories(
                     token = "Bearer $token",
                     size = 30,
-                    location = 1
+                    location = 0
                 )
 
                 val stories = responseData.listStory.toEntities()
