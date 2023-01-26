@@ -24,6 +24,16 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         buildConfigField "String", "BASE_URL", "\"${properties.getProperty('BASE_URL')}\""
         buildConfigField "String", "DB_NAME", "\"${properties.getProperty('DB_NAME')}\""
+
+        // Google Maps API Key
+        def googleMapsApiKey = properties.getProperty('GOOGLE_MAPS_API_KEY')
+        if (googleMapsApiKey == null) {
+            googleMapsApiKey = System.getenv("GOOGLE_MAPS_API_KEY_ENVIRONMENT_VARIABLE")
+        }
+
+        manifestPlaceholders = [
+                googleMapsApiKey : googleMapsApiKey
+        ]
     }
 
     buildTypes {

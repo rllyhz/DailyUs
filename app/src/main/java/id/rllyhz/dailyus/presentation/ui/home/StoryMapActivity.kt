@@ -34,6 +34,8 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
             it.setDisplayHomeAsUpEnabled(true)
         }
 
+        binding.toolbar.setTitleTextAppearance(this, R.style.TitleTextStyle_Inverse)
+        binding.toolbar.title = resources.getString(R.string.title_home)
 
 //        mapFragment = supportFragmentManager
 //            .findFragmentById(R.id.story_map) as SupportMapFragment
