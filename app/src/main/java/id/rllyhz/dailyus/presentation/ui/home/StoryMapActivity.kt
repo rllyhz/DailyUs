@@ -3,6 +3,7 @@ package id.rllyhz.dailyus.presentation.ui.home
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
@@ -10,6 +11,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.ActivityStoryMapBinding
+import id.rllyhz.dailyus.utils.hide
+import id.rllyhz.dailyus.utils.show
 
 class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -43,7 +46,11 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(map: GoogleMap) {
-        //
+        with(binding) {
+            progressbar.hide()
+            Thread.sleep(3000L)
+            storyMap.show()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
