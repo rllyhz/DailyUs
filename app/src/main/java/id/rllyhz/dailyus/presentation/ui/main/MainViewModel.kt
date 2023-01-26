@@ -34,6 +34,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     val stories = MutableLiveData<Resource<List<StoryEntity>>>()
+    val storiesWithLocation = MutableLiveData<Resource<List<StoryEntity>>>()
     val uploadStoryResponse = MutableLiveData<Resource<UploadStoryResponse>>()
 
     private var _shouldHandleUploadStoryEvent = true
@@ -77,6 +78,32 @@ class MainViewModel @Inject constructor(
                 else -> Unit
             }
         }
+    }
+
+    fun loadStoriesWithLocation(token: String) = viewModelScope.launch(Dispatchers.IO) {
+        storiesWithLocation.postValue(Resource.Loading())
+
+        dailyStoriesRepository.fetchStoriesWithLocation(token).cancellable()
+            .collectLatest { result ->
+                when (result) {
+                    is Resource.Error -> storiesWithLocation.postValue(
+                        Resource.Error(
+                            result.message ?: "Error"
+                        )
+                    )
+                    is Resource.Loading -> storiesWithLocation.postValue(Resource.Loading())
+                    is Resource.Success -> {
+                        val data = result.data
+
+                        if (data.isNullOrEmpty()) {
+                            storiesWithLocation.postValue(Resource.Success(emptyList()))
+                        } else {
+                            storiesWithLocation.postValue(Resource.Success(data))
+                        }
+                    }
+                    else -> Unit
+                }
+            }
     }
 
     fun uploadStory(

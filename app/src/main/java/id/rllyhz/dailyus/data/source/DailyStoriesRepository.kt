@@ -10,6 +10,8 @@ import okhttp3.RequestBody
 interface DailyStoriesRepository {
     fun fetchStories(token: String): Flow<Resource<List<StoryEntity>>>
 
+    fun fetchStoriesWithLocation(token: String): Flow<Resource<List<StoryEntity>>>
+
     fun uploadNewStory(
         token: String,
         photoUrl: MultipartBody.Part,

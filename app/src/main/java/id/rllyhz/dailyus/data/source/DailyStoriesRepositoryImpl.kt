@@ -85,6 +85,70 @@ class DailyStoriesRepositoryImpl @Inject constructor(
             }
         }
 
+    override fun fetchStoriesWithLocation(token: String): Flow<Resource<List<StoryEntity>>> =
+        flow {
+            emit(Resource.Loading())
+
+            val dao = storiesDB.getStoriesDao()
+            val storiesInDB = dao.getStories()
+
+            try {
+                val responseData = storiesApi.fetchStories(
+                    token = "Bearer $token",
+                    size = 30,
+                    location = 1
+                )
+
+                val stories = responseData.listStory.toEntities()
+
+                if (stories.isEmpty() && storiesInDB.isEmpty()) {
+                    emit(Resource.Error(responseData.message))
+                } else if (stories.isNotEmpty()) {
+                    dao.deleteAll()
+                    dao.insertAll(stories)
+                    emit(Resource.Success(stories))
+                } else {
+                    emit(Resource.Success(storiesInDB))
+                }
+
+            } catch (e: UnknownHostException) {
+                if (storiesInDB.isNotEmpty()) {
+                    emit(Resource.Success(storiesInDB))
+                } else {
+                    emit(Resource.Error(e.message.toString()))
+                }
+            } catch (e: HttpException) {
+                println("HttpException")
+                if (storiesInDB.isNotEmpty()) {
+                    emit(Resource.Success(storiesInDB))
+                } else {
+                    val errorBody = e.response()?.errorBody()?.string()
+
+                    if (errorBody != null) {
+                        val responseJson = JSONObject(errorBody)
+                        val message = responseJson.getString("message")
+                        // val isError = responseJson.getBoolean("error")
+                        emit(Resource.Error(message))
+                    } else {
+                        emit(Resource.Error(e.message.toString()))
+                    }
+                }
+            } catch (e: IOException) {
+                if (storiesInDB.isNotEmpty()) {
+                    emit(Resource.Success(storiesInDB))
+                } else {
+                    emit(Resource.Error(e.message.toString()))
+                }
+                println("IOException: " + e.message.toString())
+            } catch (e: Exception) {
+                if (storiesInDB.isNotEmpty()) {
+                    emit(Resource.Success(storiesInDB))
+                } else {
+                    emit(Resource.Error(e.message.toString()))
+                }
+            }
+        }
+
     override fun uploadNewStory(
         token: String,
         photoUrl: MultipartBody.Part,
