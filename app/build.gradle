@@ -118,4 +118,8 @@ dependencies {
     def kotlinXCoroutinesTestVersion = '1.6.4'
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion"
+
+    // Maps
+    implementation "com.google.android.gms:play-services-maps:18.1.0"
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 }

@@ -24,7 +24,7 @@
         android:theme="@style/Theme.DailyUs"
         tools:targetApi="33">
         <activity
-            android:name=".presentation.ui.post.StoryMapActivity"
+            android:name=".presentation.ui.home.StoryMapActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

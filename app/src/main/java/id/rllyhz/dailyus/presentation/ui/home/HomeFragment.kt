@@ -1,5 +1,6 @@
 package id.rllyhz.dailyus.presentation.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -16,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.FragmentHomeBinding
 import id.rllyhz.dailyus.presentation.adapter.StoriesAdapter
+import id.rllyhz.dailyus.presentation.ui.main.MainActivity
 import id.rllyhz.dailyus.presentation.ui.main.MainViewModel
 import id.rllyhz.dailyus.utils.hide
 import id.rllyhz.dailyus.utils.show
@@ -104,6 +106,12 @@ class HomeFragment : Fragment() {
 
     private fun setUI() {
         binding?.run {
+            homeIvMapPost.setOnClickListener {
+                Intent(requireActivity() as MainActivity, StoryMapActivity::class.java).also {
+                    startActivity(it)
+                }
+            }
+
             homeBtnTryAgain.setOnClickListener {
                 viewModel.getToken().observe(viewLifecycleOwner) { token ->
                     if (token.isNotBlank() && token.isNotEmpty())
