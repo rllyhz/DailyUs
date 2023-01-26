@@ -34,12 +34,12 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
             it.setDisplayHomeAsUpEnabled(true)
         }
 
-        binding.toolbar.setTitleTextAppearance(this, R.style.TitleTextStyle_Inverse)
         binding.toolbar.title = resources.getString(R.string.title_home)
+        binding.toolbar.setTitleTextAppearance(this, R.style.TitleTextStyle_Inverse)
 
-//        mapFragment = supportFragmentManager
-//            .findFragmentById(R.id.story_map) as SupportMapFragment
-//        mapFragment.getMapAsync(this)
+        mapFragment = supportFragmentManager
+            .findFragmentById(R.id.story_map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     override fun onMapReady(map: GoogleMap) {
