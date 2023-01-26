@@ -23,6 +23,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DailyUs"
         tools:targetApi="33">
+        <activity
+            android:name=".presentation.ui.post.StoryMapActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <receiver
             android:name=".presentation.widget.StoriesBannerWidget"
