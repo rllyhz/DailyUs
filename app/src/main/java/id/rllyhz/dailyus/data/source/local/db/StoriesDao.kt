@@ -1,5 +1,6 @@
 package id.rllyhz.dailyus.data.source.local.db
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -14,6 +15,9 @@ interface StoriesDao {
 
     @Query("SELECT * FROM story")
     suspend fun getStories(): List<StoryEntity>
+
+    @Query("SELECT * FROM story")
+    suspend fun getPagingStories(): PagingSource<Int, StoryEntity>
 
     @Query("DELETE FROM story")
     suspend fun deleteAll()
