@@ -101,5 +101,7 @@
     <string name="upload_success_message">Successfully added new story</string>
     <string name="upload_failed_message">Failed to add new story</string>
     <string name="upload_image_size_too_large_message">Please provide image with size less then 1 mb</string>
+    <string name="timeout">Timeout</string>
+    <string name="try_again">Reload</string>
     <!-- END OF UI -->
 </resources>

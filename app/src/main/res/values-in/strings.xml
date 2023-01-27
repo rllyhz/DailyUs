@@ -102,5 +102,7 @@
     <string name="upload_success_message">Berhasil menambahkan story baru</string>
     <string name="upload_failed_message">Gagal menambahkan story</string>
     <string name="upload_image_size_too_large_message">Oppss… Ukuran foto kamu lebih dari 1 mb nih!</string>
+    <string name="timeout">Timeout</string>
+    <string name="try_again">Reload</string>
     <!-- END OF UI -->
 </resources>

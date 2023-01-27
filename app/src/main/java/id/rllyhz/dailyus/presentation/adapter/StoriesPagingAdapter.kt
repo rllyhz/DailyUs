@@ -2,8 +2,8 @@ package id.rllyhz.dailyus.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -17,15 +17,10 @@ import id.rllyhz.dailyus.utils.formatDate
 import id.rllyhz.dailyus.utils.getTransitionName
 import java.util.*
 
-class StoriesAdapter :
-    ListAdapter<StoryEntity, StoriesAdapter.StoriesViewHolder>(DIFF_UTIL) {
+class StoriesPagingAdapter :
+    PagingDataAdapter<StoryEntity, StoriesPagingAdapter.StoriesViewHolder>(DIFF_UTIL) {
 
     var onClick: ((imageView: ShapeableImageView, story: StoryEntity) -> Unit)? = null
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoriesViewHolder =
-        StoriesViewHolder(
-            ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
 
     override fun onBindViewHolder(holder: StoriesViewHolder, position: Int) {
         getItem(position)?.let {
@@ -33,7 +28,11 @@ class StoriesAdapter :
         }
     }
 
-    // ViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoriesViewHolder =
+        StoriesViewHolder(
+            ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
+
     inner class StoriesViewHolder(
         private val binding: ItemStoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
