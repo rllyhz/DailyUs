@@ -1,5 +1,6 @@
 package id.rllyhz.dailyus.data.source
 
+import androidx.paging.PagingData
 import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.data.source.remote.model.UploadStoryResponse
 import id.rllyhz.dailyus.vo.Resource
@@ -19,4 +20,6 @@ interface DailyStoriesRepository {
         latitude: RequestBody?,
         longitude: RequestBody?
     ): Flow<Resource<UploadStoryResponse>>
+
+    fun getPagingStories(token: String): Flow<PagingData<StoryEntity>>
 }

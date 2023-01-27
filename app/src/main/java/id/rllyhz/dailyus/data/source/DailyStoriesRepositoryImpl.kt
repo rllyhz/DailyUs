@@ -1,5 +1,10 @@
 package id.rllyhz.dailyus.data.source
 
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import id.rllyhz.dailyus.data.mediator.StoryMediator
 import id.rllyhz.dailyus.data.source.local.db.DailyStoriesDatabase
 import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.data.source.remote.model.UploadStoryResponse
@@ -104,8 +109,6 @@ class DailyStoriesRepositoryImpl @Inject constructor(
                 if (stories.isEmpty() && storiesInDB.isEmpty()) {
                     emit(Resource.Error(responseData.message))
                 } else if (stories.isNotEmpty()) {
-                    dao.deleteAll()
-                    dao.insertAll(stories)
                     emit(Resource.Success(stories))
                 } else {
                     emit(Resource.Success(storiesInDB))
@@ -191,4 +194,16 @@ class DailyStoriesRepositoryImpl @Inject constructor(
                 emit(Resource.Error(e.message.toString()))
             }
         }
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getPagingStories(token: String): Flow<PagingData<StoryEntity>> =
+        Pager(
+            config = PagingConfig(pageSize = 10),
+            remoteMediator = StoryMediator(
+                storiesApi,
+                storiesDB,
+                "Bearer $token"
+            ),
+            pagingSourceFactory = { storiesDB.getStoriesDao().getPagingStories() }
+        ).flow
 }
