@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.rllyhz.dailyus.data.preferences.AuthPreferences
 import id.rllyhz.dailyus.data.source.DailyStoriesRepository
@@ -33,7 +34,6 @@ class MainViewModel @Inject constructor(
     private val dailyStoriesDatabase: DailyStoriesDatabase
 ) : ViewModel() {
 
-    val stories = MutableLiveData<Resource<List<StoryEntity>>>()
     val storiesWithLocation = MutableLiveData<Resource<List<StoryEntity>>>()
     val uploadStoryResponse = MutableLiveData<Resource<UploadStoryResponse>>()
 
@@ -55,30 +55,8 @@ class MainViewModel @Inject constructor(
 
     fun getEmail(): LiveData<String> = authPreferences.userEmail
 
-    fun loadStories(token: String) = viewModelScope.launch(Dispatchers.IO) {
-        stories.postValue(Resource.Loading())
-
-        dailyStoriesRepository.fetchStories(token).cancellable().collectLatest { result ->
-            when (result) {
-                is Resource.Error -> stories.postValue(
-                    Resource.Error(
-                        result.message ?: "Error"
-                    )
-                )
-                is Resource.Loading -> stories.postValue(Resource.Loading())
-                is Resource.Success -> {
-                    val data = result.data
-
-                    if (data.isNullOrEmpty()) {
-                        stories.postValue(Resource.Success(emptyList()))
-                    } else {
-                        stories.postValue(Resource.Success(data))
-                    }
-                }
-                else -> Unit
-            }
-        }
-    }
+    fun loadPagingStories(token: String) =
+        dailyStoriesRepository.getPagingStories(token).cachedIn(viewModelScope)
 
     fun loadStoriesWithLocation(token: String) = viewModelScope.launch(Dispatchers.IO) {
         storiesWithLocation.postValue(Resource.Loading())

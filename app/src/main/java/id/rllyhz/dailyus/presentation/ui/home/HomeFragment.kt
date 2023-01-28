@@ -10,25 +10,30 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.FragmentHomeBinding
-import id.rllyhz.dailyus.presentation.adapter.StoriesAdapter
+import id.rllyhz.dailyus.presentation.adapter.LoadPagingAdapter
+import id.rllyhz.dailyus.presentation.adapter.StoriesPagingAdapter
 import id.rllyhz.dailyus.presentation.ui.main.MainActivity
 import id.rllyhz.dailyus.presentation.ui.main.MainViewModel
 import id.rllyhz.dailyus.utils.hide
 import id.rllyhz.dailyus.utils.show
-import id.rllyhz.dailyus.vo.Resource
+import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
     private val viewModel: MainViewModel by activityViewModels()
 
-    private var storiesAdapter: StoriesAdapter? = null
+    private var storiesAdapter: StoriesPagingAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,59 +54,9 @@ class HomeFragment : Fragment() {
 
         postponeEnterTransition()
 
-        setObservers()
         setAdapter()
         setViewModel()
         setUI()
-    }
-
-    private fun setObservers() = binding?.run {
-        viewModel.stories.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    homeProgressbarLoading.show()
-                    homeTvErrorStories.hide()
-                    homeRvStories.hide()
-                    homeBtnTryAgain.hide()
-                    Log.d("HomeFragment", "Loading: ${resource.message}")
-                }
-                is Resource.Error -> {
-                    homeProgressbarLoading.hide()
-                    homeTvErrorStories.show()
-                    homeBtnTryAgain.show()
-                    Log.e("HomeFragment", "Error: ${resource.message}")
-                }
-                is Resource.Success -> {
-                    val stories = resource.data
-
-                    homeProgressbarLoading.hide()
-                    homeTvErrorStories.hide()
-                    homeBtnTryAgain.hide()
-
-                    if (stories.isNullOrEmpty()) {
-                        homeTvErrorStories.text =
-                            getString(R.string.stories_empty_message)
-                        homeTvErrorStories.show()
-                        homeRvStories.hide()
-                    } else {
-                        storiesAdapter?.submitList(stories)
-                        homeRvStories.show()
-                        waitForTransition(homeRvStories)
-                    }
-                    Log.i("HomeFragment", "Success: ${resource.message}")
-                }
-                else -> Unit
-            }
-        }
-
-        viewModel.scrollToTopEventCallback = {
-            binding?.homeRvStories?.run {
-                val ableToScrollVertically = layoutManager?.canScrollVertically() ?: false
-
-                if (ableToScrollVertically)
-                    smoothScrollToPosition(0)
-            }
-        }
     }
 
     private fun setUI() {
@@ -111,29 +66,78 @@ class HomeFragment : Fragment() {
                     startActivity(it)
                 }
             }
-
-            homeBtnTryAgain.setOnClickListener {
-                viewModel.getToken().observe(viewLifecycleOwner) { token ->
-                    if (token.isNotBlank() && token.isNotEmpty())
-                        viewModel.loadStories(token)
-                }
-            }
         }
 
         viewModel.getToken().observe(viewLifecycleOwner) { token ->
             if (token.isNotBlank() && token.isNotEmpty())
-                viewModel.loadStories(token)
+                lifecycleScope.launch {
+                    viewModel.loadPagingStories(token).cancellable().collectLatest {
+                        storiesAdapter?.submitData(it)
+                    }
+                }
         }
     }
 
     private fun setViewModel() = binding?.run {
+        viewModel.scrollToTopEventCallback = {
+            binding?.homeRvStories?.run {
+                val ableToScrollVertically = layoutManager?.canScrollVertically() ?: false
+
+                if (ableToScrollVertically)
+                    smoothScrollToPosition(0)
+            }
+        }
+
         viewModel.getFullName().observe(viewLifecycleOwner) {
             homeTvGreetingUser.text = getString(R.string.home_greeting_user, it)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            storiesAdapter?.let { adapter ->
+                adapter.loadStateFlow.collectLatest { loadStates ->
+                    binding?.run {
+                        when (loadStates.refresh) {
+                            is LoadState.Loading -> {
+                                homeProgressbarLoading.show()
+                                homeTvErrorStories.hide()
+                                homeRvStories.hide()
+                                homeBtnTryAgain.hide()
+                                Log.d("HomeFragment", "Loading...")
+                            }
+                            is LoadState.NotLoading -> {
+                                homeProgressbarLoading.hide()
+                                homeTvErrorStories.hide()
+                                homeRvStories.show()
+                                homeBtnTryAgain.hide()
+                                waitForTransition(homeRvStories)
+                            }
+                            is LoadState.Error -> {
+                                if (adapter.itemCount == 0) {
+                                    homeProgressbarLoading.hide()
+                                    homeTvErrorStories.text =
+                                        getString(R.string.stories_empty_message)
+                                    homeTvErrorStories.show()
+                                    homeRvStories.hide()
+                                    homeBtnTryAgain.show()
+                                    homeBtnTryAgain.setOnClickListener { adapter.retry() }
+                                } else {
+                                    homeProgressbarLoading.hide()
+                                    homeTvErrorStories.hide()
+                                    homeRvStories.show()
+                                    homeBtnTryAgain.hide()
+                                    waitForTransition(homeRvStories)
+                                    Log.e("HomeFragment", "Error: ${loadStates.refresh}")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     private fun setAdapter() {
-        storiesAdapter = StoriesAdapter()
+        storiesAdapter = StoriesPagingAdapter()
         storiesAdapter?.onClick = { imageView, story ->
             findNavController().navigate(
                 R.id.action_homeFragment_to_detailFragment,
@@ -150,7 +154,9 @@ class HomeFragment : Fragment() {
         binding?.run {
             storiesAdapter?.let { sAdapter ->
                 homeRvStories.also { rv ->
-                    rv.adapter = sAdapter
+                    rv.adapter = sAdapter.withLoadStateFooter(
+                        footer = LoadPagingAdapter { sAdapter.retry() }
+                    )
                     rv.layoutManager = LinearLayoutManager(requireActivity())
                 }
             }
