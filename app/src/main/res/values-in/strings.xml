@@ -102,6 +102,9 @@
     <string name="upload_success_message">Berhasil menambahkan story baru</string>
     <string name="upload_failed_message">Gagal menambahkan story</string>
     <string name="upload_image_size_too_large_message">Oppss… Ukuran foto kamu lebih dari 1 mb nih!</string>
+    <string name="post_location_permission_denied_message">Izin lokasi ditolak</string>
+    <string name="post_location_permission_denied_action_label">Izinkan</string>
+    <string name="post_activate_location_message">Mohon aktifkan layanan lokasi terlebih dahulu</string>
     <string name="timeout">Timeout</string>
     <string name="try_again">Reload</string>
     <string name="post_share_location_label">Bagikan lokasi</string>

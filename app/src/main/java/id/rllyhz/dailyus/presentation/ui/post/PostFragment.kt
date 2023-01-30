@@ -1,6 +1,7 @@
 package id.rllyhz.dailyus.presentation.ui.post
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.databinding.FragmentPostBinding
@@ -40,6 +44,19 @@ class PostFragment : Fragment() {
 
     private var photoResult: Bitmap? = null
     private var file: File? = null
+
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+
+    private fun isCameraPermissionGranted() = ALL_REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            requireContext(), it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
 
     private val cameraRequestPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -88,10 +105,42 @@ class PostFragment : Fragment() {
         }
     }
 
-    private fun isCameraPermissionGranted() = ALL_REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-            requireContext(), it
-        ) == PackageManager.PERMISSION_GRANTED
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                getLastKnownLocationOfUser()
+            }
+            else -> {
+                binding?.let {
+                    it.postSwitchShareLocation.isChecked = false
+                    viewModel.lastKnownLocation = null
+
+                    showPostSnackBar(
+                        requireContext(),
+                        it.root,
+                        it.postBtnUpload,
+                        getString(R.string.post_location_permission_denied_message),
+                        getString(R.string.post_location_permission_denied_action_label)
+                    ) {
+                        // When user not grant permission, user need to activate the permission manually
+                        // Direct user to the application detail setting
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).also { intent ->
+                            val uri = Uri.fromParts(
+                                "package",
+                                (requireActivity() as MainActivity).packageName,
+                                null
+                            )
+                            intent.data = uri
+
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -105,6 +154,8 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         if (!isCameraPermissionGranted()) {
             cameraRequestPermission.launch(ALL_REQUIRED_PERMISSIONS[0])
@@ -139,6 +190,14 @@ class PostFragment : Fragment() {
 
             postBtnTakePicture.setOnClickListener { takePicture() }
             postBtnPickFromGallery.setOnClickListener { pickPhotoFromGallery() }
+
+            postSwitchShareLocation.isChecked = viewModel.lastKnownLocation != null
+            postSwitchShareLocation.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked && viewModel.lastKnownLocation == null)
+                    getLastKnownLocationOfUser()
+                else
+                    viewModel.lastKnownLocation = null
+            }
 
             postBtnUpload.setOnClickListener {
                 postEtDescription.clearFocus()
@@ -256,11 +315,44 @@ class PostFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun getLastKnownLocationOfUser() {
+        if (isLocationPermissionGranted()) {
+            // Location permission granted
+            fusedLocationClient?.let { locationClient ->
+                locationClient.lastLocation.addOnSuccessListener { location ->
+                    if (location != null)
+                        viewModel.lastKnownLocation = location
+                    else
+                        binding?.run {
+                            showPostSnackBar(
+                                requireContext(),
+                                root,
+                                postBtnUpload,
+                                getString(R.string.post_activate_location_message)
+                            )
+
+                            postSwitchShareLocation.isChecked = false
+                            viewModel.lastKnownLocation = null
+                        }
+                }
+            }
+        } else {
+            // Location permission denied
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
         photoResult = null
         file = null
+        fusedLocationClient = null
     }
 
     companion object {

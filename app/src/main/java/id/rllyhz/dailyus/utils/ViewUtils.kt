@@ -31,7 +31,9 @@ fun showPostSnackBar(
     context: Context,
     view: View,
     anchor: View,
-    message: String
+    message: String,
+    actionLabel: String? = null,
+    actionCallback: View.OnClickListener? = null
 ) {
     Snackbar.make(
         view,
@@ -46,6 +48,11 @@ fun showPostSnackBar(
         setTextColor(
             ContextCompat.getColor(context, R.color.white)
         )
+
+        if (actionLabel != null) {
+            setActionTextColor(ContextCompat.getColor(anchor.context, R.color.my_orange))
+            setAction(actionLabel, actionCallback)
+        }
 
     }.show()
 }

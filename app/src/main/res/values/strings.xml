@@ -101,6 +101,9 @@
     <string name="upload_success_message">Successfully added new story</string>
     <string name="upload_failed_message">Failed to add new story</string>
     <string name="upload_image_size_too_large_message">Please provide image with size less then 1 mb</string>
+    <string name="post_location_permission_denied_message">Location permission denied</string>
+    <string name="post_location_permission_denied_action_label">Allow</string>
+    <string name="post_activate_location_message">Please activate Location services</string>
     <string name="timeout">Timeout</string>
     <string name="try_again">Reload</string>
     <string name="post_share_location_label">Share location</string>

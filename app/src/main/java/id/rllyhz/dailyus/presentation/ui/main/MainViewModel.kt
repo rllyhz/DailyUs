@@ -1,5 +1,6 @@
 package id.rllyhz.dailyus.presentation.ui.main
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,6 +40,8 @@ class MainViewModel @Inject constructor(
 
     private var _shouldHandleUploadStoryEvent = true
     var scrollToTopEventCallback: (() -> Unit)? = null
+
+    var lastKnownLocation: Location? = null
 
     fun shouldHandleUploadStoryEvent(): Boolean = if (_shouldHandleUploadStoryEvent) {
         _shouldHandleUploadStoryEvent = false
@@ -105,9 +108,18 @@ class MainViewModel @Inject constructor(
 
         val reqBodyImage = imageFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val reqBodyDesc = description.toRequestBody("text/plain".toMediaTypeOrNull())
-        val reqBodyLat = "0".toRequestBody("text/plain".toMediaTypeOrNull())
-        val reqBodyLon = "0".toRequestBody("text/plain".toMediaTypeOrNull())
         val multipartImage = MultipartBody.Part.createFormData("photo", filename, reqBodyImage)
+
+        var latitude = 0.0
+        var longitude = 0.0
+
+        lastKnownLocation?.let {
+            latitude = it.latitude
+            longitude = it.longitude
+        }
+
+        val reqBodyLon = latitude.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        val reqBodyLat = longitude.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         dailyStoriesRepository.uploadNewStory(
             token, multipartImage, reqBodyDesc, reqBodyLat, reqBodyLon
