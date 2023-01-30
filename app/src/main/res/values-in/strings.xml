@@ -104,5 +104,6 @@
     <string name="upload_image_size_too_large_message">Oppss… Ukuran foto kamu lebih dari 1 mb nih!</string>
     <string name="timeout">Timeout</string>
     <string name="try_again">Reload</string>
+    <string name="post_share_location_label">Bagikan lokasi</string>
     <!-- END OF UI -->
 </resources>

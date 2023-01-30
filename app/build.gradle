@@ -32,7 +32,7 @@ android {
         }
 
         manifestPlaceholders = [
-                googleMapsApiKey : googleMapsApiKey
+                googleMapsApiKey: googleMapsApiKey
         ]
     }
 
@@ -98,7 +98,6 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$cameraXVersion"
     implementation "androidx.camera:camera-view:$cameraXVersion"
 
-
     // Navigation
     def navigationVersion = "2.5.3"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
@@ -129,7 +128,7 @@ dependencies {
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion"
 
-    // Maps
+    // Maps and Location Services API
     implementation "com.google.android.gms:play-services-maps:18.1.0"
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 }

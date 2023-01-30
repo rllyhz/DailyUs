@@ -115,6 +115,11 @@
 
     <style name="PostDescriptionTextStyle" parent="PostPhotoPreviewLabelTextStyle" />
 
+    <style name="PostShareLocationTextStyle" parent="DefaultRegularText">
+        <item name="android:textColor">@color/my_purple_500</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="WidgetStoriesBannerTitleTextStyle" parent="DefaultMediumText">
         <item name="android:textColor">@color/my_purple_700</item>
         <item name="android:textSize">20sp</item>
