@@ -1,0 +1,7 @@
+* MainViewModel pada fungsi loadPagingStories() yang mengambil list data Paging:
+    - Ketika berhasil memuat data cerita
+        - Memastikan data tidak null
+        - Memastikan jumlah data sesuai dengan yang diharapkan
+        - Memastikan data pertama yang dikembalikan sesuai
+    - Ketika tidak ada cerita
+        - Memastikan jumlah data yang dikembalikan nol

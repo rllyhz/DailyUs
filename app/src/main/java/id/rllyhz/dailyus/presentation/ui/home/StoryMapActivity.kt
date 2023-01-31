@@ -5,7 +5,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -170,7 +169,7 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     bounds,
                     resources.displayMetrics.widthPixels,
                     resources.displayMetrics.heightPixels,
-                    150
+                    120
                 )
             )
         }

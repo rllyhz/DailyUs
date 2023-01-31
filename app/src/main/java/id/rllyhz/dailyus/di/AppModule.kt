@@ -14,6 +14,8 @@ import id.rllyhz.dailyus.data.source.AuthRepositoryImpl
 import id.rllyhz.dailyus.data.source.DailyStoriesRepository
 import id.rllyhz.dailyus.data.source.DailyStoriesRepositoryImpl
 import id.rllyhz.dailyus.data.source.local.db.DailyStoriesDatabase
+import id.rllyhz.dailyus.data.source.local.db.StoriesDao
+import id.rllyhz.dailyus.data.source.local.db.StoryKeysDao
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsAuthApiService
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
 import id.rllyhz.dailyus.utils.Constants
@@ -93,6 +95,18 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideStoriesDao(
+        storiesDB: DailyStoriesDatabase
+    ): StoriesDao = storiesDB.getStoriesDao()
+
+    @Provides
+    @Singleton
+    fun provideStoryKeyDao(
+        storiesDB: DailyStoriesDatabase
+    ): StoryKeysDao = storiesDB.getStoryKeysDao()
+
+    @Provides
+    @Singleton
     fun provideAuthRepository(
         authApi: DailyUsAuthApiService
     ): AuthRepository = AuthRepositoryImpl(authApi)
@@ -101,6 +115,7 @@ object AppModule {
     @Singleton
     fun provideDailyStoriesRepository(
         storiesApi: DailyUsStoriesApiService,
-        storiesDB: DailyStoriesDatabase
-    ): DailyStoriesRepository = DailyStoriesRepositoryImpl(storiesApi, storiesDB)
+        storiesDao: StoriesDao,
+        storyKeysDao: StoryKeysDao
+    ): DailyStoriesRepository = DailyStoriesRepositoryImpl(storiesApi, storiesDao, storyKeysDao)
 }

@@ -4,8 +4,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.withTransaction
-import id.rllyhz.dailyus.data.source.local.db.DailyStoriesDatabase
+import id.rllyhz.dailyus.data.source.local.db.StoriesDao
+import id.rllyhz.dailyus.data.source.local.db.StoryKeysDao
 import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.data.source.local.model.StoryKeys
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
@@ -15,7 +15,8 @@ import java.io.IOException
 @OptIn(ExperimentalPagingApi::class)
 class StoryMediator(
     private val storiesApi: DailyUsStoriesApiService,
-    private val storiesDB: DailyStoriesDatabase,
+    private val storiesDao: StoriesDao,
+    private val storyKeyDao: StoryKeysDao,
     private val token: String
 ) : RemoteMediator<Int, StoryEntity>() {
 
@@ -61,35 +62,32 @@ class StoryMediator(
             val stories = response.listStory
             val endOfPaginationReached = stories.isEmpty()
 
-            storiesDB.withTransaction {
-                // clear all tables in the database
-                if (loadType == LoadType.REFRESH) {
-                    storiesDB.getStoryKeysDao().deleteAllKeys()
-                    storiesDB.getStoriesDao().deleteAll()
-                }
-
-                val prevKey = if (page == 1) null else page - 1
-                val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = stories.map {
-                    StoryKeys(it.id, prevKey, nextKey)
-                }
-
-                val local = ArrayList<StoryEntity>()
-
-                stories.map { _stories ->
-                    StoryEntity(
-                        _stories.id,
-                        _stories.name,
-                        _stories.description,
-                        _stories.photoUrl,
-                        _stories.createdAt,
-                        _stories.lat,
-                        _stories.lon,
-                    ).let { local.add(it) }
-                }
-                storiesDB.getStoryKeysDao().insertKeys(keys)
-                storiesDB.getStoriesDao().insertAll(local)
+            if (loadType == LoadType.REFRESH) {
+                storyKeyDao.deleteAllKeys()
+                storiesDao.deleteAll()
             }
+
+            val prevKey = if (page == 1) null else page - 1
+            val nextKey = if (endOfPaginationReached) null else page + 1
+            val keys = stories.map {
+                StoryKeys(it.id, prevKey, nextKey)
+            }
+
+            val local = ArrayList<StoryEntity>()
+
+            stories.map { _stories ->
+                StoryEntity(
+                    _stories.id,
+                    _stories.name,
+                    _stories.description,
+                    _stories.photoUrl,
+                    _stories.createdAt,
+                    _stories.lat,
+                    _stories.lon,
+                ).let { local.add(it) }
+            }
+            storyKeyDao.insertKeys(keys)
+            storiesDao.insertAll(local)
 
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
 
@@ -104,14 +102,14 @@ class StoryMediator(
     // From that last page, get the last item
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, StoryEntity>): StoryKeys? =
         state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { data ->
-            storiesDB.getStoryKeysDao().getStoryKeysOf(data.id)
+            storyKeyDao.getStoryKeysOf(data.id)
         }
 
     // Get the first page that was retrieved, that contained items.
     // From that first page, get the first item
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, StoryEntity>): StoryKeys? =
         state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { data ->
-            storiesDB.getStoryKeysDao().getStoryKeysOf(data.id)
+            storyKeyDao.getStoryKeysOf(data.id)
         }
 
     // The paging library is trying to load data after the anchor position
@@ -119,7 +117,7 @@ class StoryMediator(
     private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, StoryEntity>): StoryKeys? =
         state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
-                storiesDB.getStoryKeysDao().getStoryKeysOf(id)
+                storyKeyDao.getStoryKeysOf(id)
             }
         }
 }

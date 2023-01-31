@@ -11,7 +11,7 @@ import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 interface StoriesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(stories: List<StoryEntity>)
+    suspend fun insertAll(stories: List<StoryEntity>)
 
     @Query("SELECT * FROM story")
     suspend fun getStories(): List<StoryEntity>

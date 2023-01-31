@@ -5,7 +5,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import id.rllyhz.dailyus.data.mediator.StoryMediator
-import id.rllyhz.dailyus.data.source.local.db.DailyStoriesDatabase
+import id.rllyhz.dailyus.data.source.local.db.StoriesDao
+import id.rllyhz.dailyus.data.source.local.db.StoryKeysDao
 import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.data.source.remote.model.UploadStoryResponse
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
@@ -23,15 +24,15 @@ import javax.inject.Inject
 
 class DailyStoriesRepositoryImpl @Inject constructor(
     private val storiesApi: DailyUsStoriesApiService,
-    private val storiesDB: DailyStoriesDatabase
+    private val storiesDao: StoriesDao,
+    private val storyKeysDao: StoryKeysDao
 ) : DailyStoriesRepository {
 
     override fun fetchStoriesWithLocation(token: String): Flow<Resource<List<StoryEntity>>> =
         flow {
             emit(Resource.Loading())
 
-            val dao = storiesDB.getStoriesDao()
-            val storiesInDB = dao.getStories()
+            val storiesInDB = storiesDao.getStories()
 
             try {
                 val responseData = storiesApi.fetchStories(
@@ -137,9 +138,10 @@ class DailyStoriesRepositoryImpl @Inject constructor(
             config = PagingConfig(pageSize = 10),
             remoteMediator = StoryMediator(
                 storiesApi,
-                storiesDB,
+                storiesDao,
+                storyKeysDao,
                 "Bearer $token"
             ),
-            pagingSourceFactory = { storiesDB.getStoriesDao().getPagingStories() }
+            pagingSourceFactory = { storiesDao.getPagingStories() }
         ).flow
 }
