@@ -52,6 +52,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    testOptions {
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -73,9 +77,13 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6"
+    def retrofitVersion = '2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    // Okhttp
+    def okhttpVersion = '5.0.0-alpha.6'
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
 
     // Coroutines
     def androidXCoroutinesVersion = "1.6.1"
@@ -114,19 +122,35 @@ dependencies {
     // Testing libraries
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-    def androidXArchCoreTestingVersion = '2.1.0'
-    androidTestImplementation "androidx.arch.core:core-testing:$androidXArchCoreTestingVersion"
-    testImplementation "androidx.arch.core:core-testing:$androidXArchCoreTestingVersion"
 
     def mockitoVersion = '3.12.4'
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
 
+    // Espresso
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    def androidXArchCoreTestingVersion = '2.1.0'
+    testImplementation "androidx.arch.core:core-testing:$androidXArchCoreTestingVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidXArchCoreTestingVersion"
+
     def kotlinXCoroutinesTestVersion = '1.6.4'
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinXCoroutinesTestVersion"
+
+    // Fragment Test Extensions - launchFragmentInContainer
+    debugImplementation "androidx.fragment:fragment-testing:1.5.5"
+
+    // Mock Web Server
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+    androidTestImplementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    androidTestImplementation "com.squareup.okhttp3:okhttp-tls:$okhttpVersion"
+
+    // Dagger Hilt Test
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$daggerHiltVersion"
+
 
     // Maps and Location Services API
     implementation "com.google.android.gms:play-services-maps:18.1.0"
