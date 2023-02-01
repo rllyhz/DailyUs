@@ -25,6 +25,7 @@
         android:roundIcon="@mipmap/ic_launcher_custom_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DailyUs"
+        android:usesCleartextTraffic="true"
         tools:targetApi="33">
 
         <meta-data
