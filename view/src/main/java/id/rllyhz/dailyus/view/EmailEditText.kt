@@ -10,6 +10,7 @@ import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
 
 class EmailEditText : AppCompatEditText {
+
     constructor(context: Context) : super(context) {
         initView()
     }

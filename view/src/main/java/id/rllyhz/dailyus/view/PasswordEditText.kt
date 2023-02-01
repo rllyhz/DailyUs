@@ -11,7 +11,8 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 
 class PasswordEditText : AppCompatEditText {
-    private val minimalLength = 6
+
+    private val minimalLength = 8
 
     constructor(context: Context) : super(context) {
         initView()
