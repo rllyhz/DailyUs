@@ -18,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "id.rllyhz.dailyus.utils.CustomHiltTestRunner"
 
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -121,14 +121,23 @@ dependencies {
 
     // Testing libraries
     testImplementation 'junit:junit:4.13.2'
+
+    // Core library
+    androidTestImplementation "androidx.test:core:1.5.0"
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation "androidx.test:runner:1.5.2"
+    androidTestImplementation "androidx.test:rules:1.5.2"
+
 
     def mockitoVersion = '3.12.4'
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
 
     // Espresso
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    def espressoVersion = '3.5.1'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
 
     def androidXArchCoreTestingVersion = '2.1.0'
     testImplementation "androidx.arch.core:core-testing:$androidXArchCoreTestingVersion"
