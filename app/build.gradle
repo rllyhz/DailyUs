@@ -121,13 +121,15 @@ dependencies {
 
     // Testing libraries
     testImplementation 'junit:junit:4.13.2'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
 
     // Core library
-    androidTestImplementation "androidx.test:core:1.5.0"
+    androidTestImplementation "androidx.test:core:1.4.1-alpha04"
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation "androidx.test:runner:1.5.2"
-    androidTestImplementation "androidx.test:rules:1.5.2"
+    androidTestImplementation "androidx.test:runner:1.4.1-alpha04"
+    androidTestImplementation "androidx.test:rules:1.4.1-alpha04"
 
 
     def mockitoVersion = '3.12.4'
@@ -136,8 +138,10 @@ dependencies {
 
     // Espresso
     def espressoVersion = '3.5.1'
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
 
     def androidXArchCoreTestingVersion = '2.1.0'
     testImplementation "androidx.arch.core:core-testing:$androidXArchCoreTestingVersion"
@@ -156,6 +160,8 @@ dependencies {
     androidTestImplementation "com.squareup.okhttp3:okhttp-tls:$okhttpVersion"
 
     // Dagger Hilt Test
+    kaptTest "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
+    testImplementation "com.google.dagger:hilt-android-testing:$daggerHiltVersion"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
     androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$daggerHiltVersion"
