@@ -1,53 +1,65 @@
 <resources>
     <string name="app_name">DailyUs</string>
+    <string name="temp_file_name">@string/app_name</string>
+    <string name="widget_stories_banner_title">Today Stories</string>
+    <string name="widget_stories_banner_description">Daily stories for your daily inspirations</string>
+    <string name="widget_stories_banner_empty_message">There is no stories yet</string>
+    <string name="widget_stories_banner_error_message">Something went wrong :(</string>
+    <string name="widget_stories_banner_item_clicked_message">You clicked story %d</string>
 
     <!-- Data -->
     <string name="on_boarding_heading">@string/app_name</string>
-    <string name="on_boarding_sub_heading">Ekspresikan Kenanganmu Dengan Membagikannya Pada Dunia</string>
-    <string name="home_greeting_user">Halo, %s!</string>
-    <string name="home_greeting_user_example">Halo, Rully!</string>
-    <string name="home_greeting_headline">Bagikan Kenanganmu Hari Ini.</string>
-    <string name="upload_photo_preview">Hasil Foto</string>
+    <string name="on_boarding_sub_heading">Express Your Memories By Sharing Them With The World</string>
+    <string name="home_greeting_user">Hello, %s!</string>
+    <string name="home_greeting_user_example">Hello, Rully!</string>
+    <string name="home_greeting_headline">Share Your Memories Today.</string>
+    <string name="upload_photo_preview">Photo Preview</string>
     <string name="profile_email_example">rullyihza00@gmail.com</string>
     <string name="profile_full_name_example">Rully Ihza Mahendra</string>
     <string name="card_story_user_full_name_example">Rully Ihza Mahendra</string>
     <string name="card_story_date_example">07:12, 09 Nov 2022</string>
-    <string name="card_story_description_example">Hari yang sangat indah untuk membagikan suasana hati.</string>
-    <string name="detail_lat_lon_label">Koordinat :</string>
+    <string name="card_story_description_example">It\'s a very beautiful day to share the mood.</string>
+    <string name="detail_lat_lon_label">Coordinate :</string>
     <string name="detail_lat_lon_example">12.33334, 32545.44</string>
     <string name="detail_lat_lon">%s, %s</string>
-    <string name="transition_name_image_example">image</string>
+    <string name="transition_name_of_image">image</string>
     <!-- END OF Data -->
 
     <!-- UI -->
     <!-- Titles -->
-    <string name="title_example">Judul</string>
-    <string name="title_register">Daftar</string>
-    <string name="title_login">Masuk</string>
+    <string name="title_example">Title</string>
+    <string name="title_register">Register</string>
+    <string name="title_login">Login</string>
     <string name="title_detail">Detail</string>
     <string name="title_home">Home</string>
     <string name="title_post">Post Story</string>
     <string name="title_profile">Profile</string>
+    <string name="title_pick_from_gallery">Choose a photo</string>
 
     <!-- Buttons -->
-    <string name="button_register">Daftar</string>
-    <string name="button_login">Masuk</string>
-    <string name="button_logout">Keluar</string>
-    <string name="button_change_language">Ubah bahasa</string>
-    <string name="button_upload">Unggah</string>
-    <string name="button_take_picture">Kamera</string>
-    <string name="button_pick_from_gallery">Galeri</string>
-    <string name="button_on_boarding_next">Lanjutkan</string>
+    <string name="button_register">Register</string>
+    <string name="button_login">Login</string>
+    <string name="button_logout">Logout</string>
+    <string name="button_change_language">Change language</string>
+    <string name="button_upload">Create Story</string>
+    <string name="button_take_picture">Camera</string>
+    <string name="button_pick_from_gallery">Gallery</string>
+    <string name="button_on_boarding_next">Next</string>
 
     <!-- Dialog -->
-    <string name="dialog_title_register_success">Berhasil mendaftar</string>
-    <string name="dialog_message_register_success">Anda telah terdaftar! Silahkan login</string>
-    <string name="dialog_positive_action_register_success">Baik</string>
+    <string name="dialog_title_register_success">Successfully registered</string>
+    <string name="dialog_message_register_success">You have been registered! \nPlease login and make your amazing story right now</string>
+    <string name="dialog_positive_action_register_success">Oke</string>
+    <string name="dialog_title_logout_confirm">Are you sure want to leave?</string>
+    <string name="dialog_message_logout_confirm">You will need to login again in order to access the application if you continue this process.</string>
+    <string name="dialog_positive_action_logout_confirm">Oke</string>
+    <string name="dialog_negative_action_logout_confirm">Cancel</string>
 
     <!-- Content Description -->
-    <string name="on_boarding_illustration_content_description">Ilustrasi berbagi kenangan bersama teman</string>
-    <string name="button_content_description_example">Tombol</string>
-    <string name="icon_content_description_example">Ikon</string>
+    <string name="on_boarding_illustration_content_description">Illustration of sharing memories with friends</string>
+    <string name="photo_preview_content_description">Preview photos</string>
+    <string name="button_content_description_example">Button</string>
+    <string name="icon_content_description_example">Icon</string>
     <string name="button_register_content_description_example">@string/button_register</string>
     <string name="button_login_content_description_example">@string/button_login</string>
     <string name="button_logout_content_description_example">@string/button_logout</string>
@@ -55,32 +67,45 @@
     <string name="button_take_picture_content_description_example">@string/button_take_picture</string>
     <string name="button_pick_from_gallery_content_description_example">@string/button_pick_from_gallery</string>
     <string name="button_on_boarding_next_content_description_example">@string/button_on_boarding_next</string>
-    <string name="button_capture_camera">Button tangkap foto</string>
-    <string name="button_switch_capture_mode">Button ganti mode kamera</string>
-    <string name="icon_back_content_description_example">Ikon kembali</string>
-    <string name="icon_logo_content_description_example">Ikon logo</string>
-    <string name="icon_navigate_up_content_description_example">Ikon kembali ke halaman sebelumnya</string>
-    <string name="icon_home_content_description_example">Ikon halaman utama</string>
-    <string name="icon_upload_story_content_description_example">Ikon unggah story</string>
-    <string name="icon_profile_content_description_example">Ikon profil</string>
+    <string name="button_capture_camera">Take picture button</string>
+    <string name="button_switch_capture_mode">Change camera mode button</string>
+    <string name="icon_back_content_description_example">Back icon</string>
+    <string name="icon_logo_content_description_example">Logo icon</string>
+    <string name="icon_navigate_up_content_description_example">Back to previous page icon</string>
+    <string name="icon_home_content_description_example">Go to home icon</string>
+    <string name="icon_upload_story_content_description_example">Upload new story icon</string>
+    <string name="icon_profile_content_description_example">Profile icon</string>
 
     <!-- Edit Text Hint -->
-    <string name="name_hint">Nama</string>
+    <string name="name_hint">Name</string>
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Password</string>
-    <string name="description_hint">Berikan deskripsi…</string>
+    <string name="description_hint">Give it some description…</string>
 
     <!-- Error or invalid state message -->
-    <string name="name_empty_message">Nama tidak boleh kosong</string>
-    <string name="email_empty_message">Email tidak boleh kosong</string>
-    <string name="password_empty_message">Password tidak boleh kosong</string>
-    <string name="name_invalid_message">Nama tidak valid</string>
-    <string name="email_invalid_message">Email tidak valid</string>
-    <string name="password_invalid_message">Password tidak valid</string>
-    <string name="wrong_credential_message">Email atau password salah</string>
-    <string name="email_already_taken_message">Email sudah terdaftar</string>
-    <string name="internal_error_message">Maaf, telah terjadi kesalahan</string>
-    <string name="button_try_again">Coba lagi</string>
-    <string name="stories_empty_message">Tidak ada cerita</string>
+    <string name="name_empty_message">Name must not be empty</string>
+    <string name="email_empty_message">Email must not be empty</string>
+    <string name="password_empty_message">Password must not be empty</string>
+    <string name="description_empty_message">Description must not be empty</string>
+    <string name="photo_empty_message">Upload a photo first</string>
+    <string name="name_invalid_message">Name is not valid</string>
+    <string name="email_invalid_message">Email is not valid</string>
+    <string name="password_invalid_message">Password is not valid</string>
+    <string name="wrong_credential_message">Wrong email or password</string>
+    <string name="email_already_taken_message">Email has already taken</string>
+    <string name="internal_error_message">Sorry, It went wrong internally</string>
+    <string name="login_success_message">Successfully logged in</string>
+    <string name="button_try_again">Try again</string>
+    <string name="stories_empty_message">There is no stories yet</string>
+    <string name="upload_camera_permission_rejected_message">Camera access permission rejected</string>
+    <string name="upload_success_message">Successfully added new story</string>
+    <string name="upload_failed_message">Failed to add new story</string>
+    <string name="upload_image_size_too_large_message">Please provide image with size less then 1 mb</string>
+    <string name="post_location_permission_denied_message">Location permission denied</string>
+    <string name="post_location_permission_denied_action_label">Allow</string>
+    <string name="post_activate_location_message">Please activate Location services</string>
+    <string name="timeout">Timeout</string>
+    <string name="try_again">Reload</string>
+    <string name="post_share_location_label">Share location</string>
     <!-- END OF UI -->
 </resources>

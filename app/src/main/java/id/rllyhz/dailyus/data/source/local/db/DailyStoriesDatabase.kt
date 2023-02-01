@@ -8,10 +8,9 @@ import id.rllyhz.dailyus.data.source.local.model.StoryKeys
 @Database(
     entities = [StoryEntity::class, StoryKeys::class],
     version = 1,
-    exportSchema = false,
+    exportSchema = false
 )
-abstract class DailyUsDatabase : RoomDatabase() {
-
-    abstract fun storiesDao(): StoriesDao
-    abstract fun storyKeysDao(): StoryKeysDao
+abstract class DailyStoriesDatabase : RoomDatabase() {
+    abstract fun getStoriesDao(): StoriesDao
+    abstract fun getStoryKeysDao(): StoryKeysDao
 }

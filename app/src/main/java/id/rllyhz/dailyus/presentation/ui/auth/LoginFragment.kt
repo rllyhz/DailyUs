@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -99,7 +100,7 @@ class LoginFragment : Fragment() {
                     updateUI(UIState.Loading, null)
                 }
                 is Resource.Success -> {
-                    updateUI(UIState.HasData, null)
+                    updateUI(UIState.HasData, getString(R.string.login_success_message))
 
                     saveLoggedInUserData(resultResources.data!!.loginResult, userEmail)
 
@@ -108,6 +109,7 @@ class LoginFragment : Fragment() {
                         requireActivity().finish()
                     }
                 }
+                else -> Unit
             }
         }
     }
@@ -140,20 +142,30 @@ class LoginFragment : Fragment() {
 
         resourceMessage?.let {
             binding?.let { bnView ->
-                if (it == "HTTP 401 Unauthorized") {
-                    showAuthSnackBar(
-                        requireActivity(),
-                        bnView.root,
-                        bnView.loginBtnSubmit,
-                        getString(R.string.wrong_credential_message)
-                    )
-                } else {
-                    showAuthSnackBar(
-                        requireActivity(),
-                        bnView.root,
-                        bnView.loginBtnSubmit,
-                        getString(R.string.internal_error_message)
-                    )
+                when (it) {
+                    "User not found", "Invalid password", "HTTP 401 Unauthorized" -> {
+                        showAuthSnackBar(
+                            requireActivity(),
+                            bnView.root,
+                            bnView.loginBtnSubmit,
+                            getString(R.string.wrong_credential_message)
+                        )
+                    }
+                    getString(R.string.login_success_message) -> {
+                        Toast.makeText(
+                            requireContext().applicationContext,
+                            getString(R.string.login_success_message),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else -> {
+                        showAuthSnackBar(
+                            requireActivity(),
+                            bnView.root,
+                            bnView.loginBtnSubmit,
+                            getString(R.string.internal_error_message)
+                        )
+                    }
                 }
             }
         }

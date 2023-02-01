@@ -18,7 +18,7 @@ class SplashFragment : Fragment() {
     private var binding: FragmentSplashBinding? = null
     private var splashRunnable: Runnable? = null
 
-    private val splashDuration = 3500L
+    private val splashDuration = 2500L
 
     private val viewModel: AuthViewModel by activityViewModels()
 

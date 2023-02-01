@@ -11,11 +11,14 @@ import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 interface StoriesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStories(stories: List<StoryEntity>)
+    suspend fun insertAll(stories: List<StoryEntity>)
 
-    @Query("SELECT * FROM stories")
-    fun getStories(): PagingSource<Int, StoryEntity>
+    @Query("SELECT * FROM story")
+    suspend fun getStories(): List<StoryEntity>
 
-    @Query("DELETE FROM stories")
-    suspend fun deleteStories()
+    @Query("SELECT * FROM story")
+    fun getPagingStories(): PagingSource<Int, StoryEntity>
+
+    @Query("DELETE FROM story")
+    suspend fun deleteAll()
 }

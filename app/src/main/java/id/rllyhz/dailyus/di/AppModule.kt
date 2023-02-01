@@ -13,14 +13,17 @@ import id.rllyhz.dailyus.data.source.AuthRepository
 import id.rllyhz.dailyus.data.source.AuthRepositoryImpl
 import id.rllyhz.dailyus.data.source.DailyStoriesRepository
 import id.rllyhz.dailyus.data.source.DailyStoriesRepositoryImpl
-import id.rllyhz.dailyus.data.source.local.db.DailyUsDatabase
+import id.rllyhz.dailyus.data.source.local.db.DailyStoriesDatabase
+import id.rllyhz.dailyus.data.source.local.db.StoriesDao
+import id.rllyhz.dailyus.data.source.local.db.StoryKeysDao
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsAuthApiService
 import id.rllyhz.dailyus.data.source.remote.network.DailyUsStoriesApiService
 import id.rllyhz.dailyus.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -35,26 +38,20 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(
-        @ApplicationContext context: Context
-    ): DailyUsDatabase =
-        Room.databaseBuilder(
-            context,
-            DailyUsDatabase::class.java,
-            Constants.databaseName
-        ).build()
-
-    @Provides
-    @Singleton
     fun provideApiClient(): OkHttpClient =
         OkHttpClient.Builder().apply {
             val loggingInterceptor = HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BODY)
-                .apply { if (!BuildConfig.DEBUG) setLevel(HttpLoggingInterceptor.Level.NONE) }
+                .apply {
+                    if (BuildConfig.DEBUG) setLevel(HttpLoggingInterceptor.Level.BODY)
+                    else setLevel(HttpLoggingInterceptor.Level.NONE)
+                }
 
             addInterceptor(loggingInterceptor)
-
-        }.build()
+        }
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build()
 
     @Provides
     @Singleton
@@ -63,7 +60,7 @@ object AppModule {
     ): DailyUsAuthApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.apiBaseUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .client(apiClient)
             .build()
 
@@ -77,12 +74,36 @@ object AppModule {
     ): DailyUsStoriesApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.apiBaseUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .client(apiClient)
             .build()
 
         return retrofit.create(DailyUsStoriesApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideDailyStoriesDatabase(
+        @ApplicationContext context: Context
+    ): DailyStoriesDatabase =
+        Room.databaseBuilder(
+            context,
+            DailyStoriesDatabase::class.java,
+            Constants.databaseName
+        )
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideStoriesDao(
+        storiesDB: DailyStoriesDatabase
+    ): StoriesDao = storiesDB.getStoriesDao()
+
+    @Provides
+    @Singleton
+    fun provideStoryKeyDao(
+        storiesDB: DailyStoriesDatabase
+    ): StoryKeysDao = storiesDB.getStoryKeysDao()
 
     @Provides
     @Singleton
@@ -94,6 +115,7 @@ object AppModule {
     @Singleton
     fun provideDailyStoriesRepository(
         storiesApi: DailyUsStoriesApiService,
-        db: DailyUsDatabase
-    ): DailyStoriesRepository = DailyStoriesRepositoryImpl(storiesApi, db)
+        storiesDao: StoriesDao,
+        storyKeysDao: StoryKeysDao
+    ): DailyStoriesRepository = DailyStoriesRepositoryImpl(storiesApi, storiesDao, storyKeysDao)
 }

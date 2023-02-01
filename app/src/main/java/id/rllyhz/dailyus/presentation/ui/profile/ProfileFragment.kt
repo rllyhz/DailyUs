@@ -6,6 +6,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -47,12 +48,27 @@ class ProfileFragment : Fragment() {
             }
 
             profileBtnLogout.setOnClickListener {
-                viewModel.logout()
-
-                requireActivity().finish()
-                findNavController().navigate(R.id.action_profileFragment_to_authActivity)
+                AlertDialog.Builder(requireContext())
+                    .setTitle(getString(R.string.dialog_title_logout_confirm))
+                    .setCancelable(false)
+                    .setMessage(getString(R.string.dialog_message_logout_confirm))
+                    .setPositiveButton(getString(R.string.dialog_positive_action_logout_confirm)) { dialog, _ ->
+                        dialog.dismiss()
+                        logout()
+                    }
+                    .setNegativeButton(getString(R.string.dialog_negative_action_logout_confirm)) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
             }
         }
+    }
+
+    private fun logout() {
+        viewModel.logout()
+
+        requireActivity().finish()
+        findNavController().navigate(R.id.action_profileFragment_to_authActivity)
     }
 
     override fun onDestroyView() {

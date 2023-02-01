@@ -12,9 +12,9 @@ interface StoryKeysDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertKeys(storyKeys: List<StoryKeys>)
 
-    @Query("SELECT * FROM story_keys WHERE id = :storyId")
-    suspend fun getKeysOf(storyId: String): StoryKeys?
+    @Query("SELECT * FROM story_keys WHERE id = :storyKeysId")
+    suspend fun getStoryKeysOf(storyKeysId: String): StoryKeys?
 
     @Query("DELETE FROM story_keys")
-    suspend fun deleteKeys()
+    suspend fun deleteAllKeys()
 }

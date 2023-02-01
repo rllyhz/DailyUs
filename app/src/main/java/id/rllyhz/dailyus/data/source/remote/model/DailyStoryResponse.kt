@@ -1,37 +1,29 @@
 package id.rllyhz.dailyus.data.source.remote.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class DailyStoryResponse(
-    @Json(name = "listStory")
-    val stories: List<StoryListResponse>,
-
-    @Json(name = "error")
-    val isError: Boolean,
-
-    @Json(name = "message")
+    @SerializedName("listStory")
+    val listStory: List<StoryListResponse>,
+    @SerializedName("error")
+    val error: Boolean,
+    @SerializedName("message")
     val message: String
 )
 
 data class StoryListResponse(
-    @Json(name = "photoUrl")
-    val photoUrl: String,
-
-    @Json(name = "createdAt")
-    val createdAt: String,
-
-    @Json(name = "name")
-    val name: String,
-
-    @Json(name = "description")
-    val description: String,
-
-    @Json(name = "id")
+    @field:SerializedName("id")
     val id: String,
-
-    @Json(name = "lat")
-    val latitude: Double? = null,
-
-    @Json(name = "lon")
-    val longitude: Double? = null
+    @field:SerializedName("name")
+    val name: String,
+    @field:SerializedName("description")
+    val description: String,
+    @field:SerializedName("photoUrl")
+    val photoUrl: String,
+    @field:SerializedName("createdAt")
+    val createdAt: String,
+    @field:SerializedName("lat")
+    val lat: Double,
+    @field:SerializedName("lon")
+    val lon: Double
 )

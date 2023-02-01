@@ -1,6 +1,8 @@
 package id.rllyhz.dailyus.utils
 
+import id.rllyhz.dailyus.BuildConfig
+
 object Constants {
-    const val apiBaseUrl = "https://story-api.dicoding.dev/v1/"
-    const val databaseName = "dailyUs.db"
+    const val apiBaseUrl = BuildConfig.BASE_URL
+    const val databaseName = BuildConfig.DB_NAME
 }

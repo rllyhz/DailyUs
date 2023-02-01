@@ -9,35 +9,38 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
+import com.google.android.material.imageview.ShapeableImageView
 import id.rllyhz.dailyus.R
 import id.rllyhz.dailyus.data.source.local.model.StoryEntity
 import id.rllyhz.dailyus.databinding.ItemStoryBinding
+import id.rllyhz.dailyus.utils.formatDate
+import id.rllyhz.dailyus.utils.getTransitionName
 import java.util.*
 
-class StoriesAdapter : PagingDataAdapter<StoryEntity, StoriesAdapter.StoriesViewModel>(DIFF_UTIL) {
+class StoriesPagingAdapter :
+    PagingDataAdapter<StoryEntity, StoriesPagingAdapter.StoriesViewHolder>(DIFF_UTIL) {
 
-    var onClick: ((story: StoryEntity) -> Unit)? = null
+    var onClick: ((imageView: ShapeableImageView, story: StoryEntity) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoriesViewModel =
-        StoriesViewModel(
-            ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
-
-    override fun onBindViewHolder(holder: StoriesViewModel, position: Int) {
+    override fun onBindViewHolder(holder: StoriesViewHolder, position: Int) {
         getItem(position)?.let {
             holder.bind(it)
         }
     }
 
-    // ViewModel
-    inner class StoriesViewModel(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoriesViewHolder =
+        StoriesViewHolder(
+            ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
+
+    inner class StoriesViewHolder(
         private val binding: ItemStoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.root.setOnClickListener {
                 getItem(bindingAdapterPosition)?.let { story ->
-                    onClick?.invoke(story)
+                    onClick?.invoke(binding.itemStoryIvPost, story)
                 }
             }
         }
@@ -69,8 +72,12 @@ class StoriesAdapter : PagingDataAdapter<StoryEntity, StoriesAdapter.StoriesView
                     else firstChar.toString()
                 }
 
+                itemStoryTvDate.text = formatDate(story.createdAt)
+                itemStoryTvDescription.text = story.description
 
-                itemStoryTvDate.text = story.createdAt
+                val transitionNameOfImage =
+                    itemView.context.getString(R.string.transition_name_of_image)
+                itemStoryIvPost.transitionName = getTransitionName(transitionNameOfImage, story.id)
             }
         }
     }

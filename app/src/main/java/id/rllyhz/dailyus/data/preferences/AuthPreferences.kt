@@ -10,6 +10,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -96,6 +97,9 @@ class AuthPreferences @Inject constructor(
     val isLoggedIn = _dataStore.data.map { preferences ->
         preferences[IS_LOGGED_IN_KEY] ?: false
     }.distinctUntilChanged().asLiveData()
+
+    suspend fun isAlreadyLoggedIn(): Boolean =
+        _dataStore.data.first()[IS_LOGGED_IN_KEY] ?: false
 
     /*
      * Save login state

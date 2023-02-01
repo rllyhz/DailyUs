@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey
 data class StoryKeys(
     @PrimaryKey
     val id: String,
-
     val prevKey: Int?,
-
     val nextKey: Int?
 )

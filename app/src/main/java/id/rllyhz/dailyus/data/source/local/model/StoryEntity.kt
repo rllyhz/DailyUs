@@ -7,24 +7,16 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "stories")
+@Entity(tableName = "story")
 data class StoryEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     val id: String,
-
     val name: String,
-
     val description: String,
-
+    @ColumnInfo(name = "photo_url")
     val photoUrl: String,
-
     @ColumnInfo(name = "created_at")
     val createdAt: String,
-
-    @ColumnInfo(name = "lat")
     val latitude: Double?,
-
-    @ColumnInfo(name = "lon")
     val longitude: Double?
-
 ) : Parcelable

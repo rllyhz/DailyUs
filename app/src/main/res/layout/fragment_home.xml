@@ -26,6 +26,21 @@
         app:layout_constraintStart_toStartOf="@id/home_tv_greeting_user"
         app:layout_constraintTop_toBottomOf="@id/home_tv_greeting_user" />
 
+    <ImageView
+        android:id="@+id/home_iv_map_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/widget_stories_banner_description"
+        android:focusable="true"
+        android:foreground="?android:selectableItemBackground"
+        android:src="@drawable/ic_map_stories"
+        app:layout_constraintBottom_toBottomOf="@+id/home_tv_greeting_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/home_tv_greeting_user"
+        app:tint="@color/my_purple_500" />
+
     <View
         android:id="@+id/home_line"
         android:layout_width="184dp"
@@ -60,20 +75,6 @@
         app:layout_constraintTop_toBottomOf="@id/home_line" />
 
     <TextView
-        android:id="@+id/home_tv_empty_stories"
-        style="@style/DefaultRegularText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stories_empty_message"
-        android:textColor="@color/my_purple_200"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_line" />
-
-    <TextView
         android:id="@+id/home_tv_error_stories"
         style="@style/DefaultRegularText"
         android:layout_width="wrap_content"
@@ -89,15 +90,14 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/home_btn_try_again"
-        style="@style/ButtonStyle"
+        style="@style/OutlinedButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/button_try_again"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_tv_empty_stories" />
+        app:layout_constraintTop_toBottomOf="@id/home_tv_error_stories" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
