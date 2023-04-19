@@ -6,6 +6,24 @@ posting-stories-like Android app. The app being built had to be using Animation 
 Animation, Motion Animation, or Shared Element), Authentication (Login and Register), posting a new
 story with photo and description, show story list, and creating a custom view.
 
+## Preview
+
+<p align="center">
+    <img src="art/splash_onboarding_demo.gif"
+        alt="Splash and OnBoarding Demo"
+        width="200" />
+</p>
+
+<p align="center">
+    <img src="art/home_and_other_pages_demo.gif"
+        alt="Home and other pages demo"
+        width="200" />
+
+<p align="center">
+    <img src="art/logout_demo.gif"
+        alt="Logout demo"
+        width="200" />
+
 ## Tech Stack
 
 - Kotlin
